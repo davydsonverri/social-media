@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CQRS.Core.Messages
 {
-    public abstract class Message
+    public record class Message
     {
         public Guid Id { get; set; }
     }
