@@ -2,7 +2,7 @@
 
 namespace Post.Command.Api.Commands
 {
-    public class LikePost : BaseCommand
+    public record LikePost : BaseCommand
     {
         
     }
