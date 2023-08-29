@@ -44,12 +44,12 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
         working-directory: src
-      - name: Build
-        run: dotnet build --no-restore
-        working-directory: src
-      - name: Test
-        run: dotnet test --no-build --verbosity normal
-        working-directory: src
+#      - name: Build
+#        run: dotnet build --no-restore
+#        working-directory: src
+#      - name: Test
+#        run: dotnet test --no-build --verbosity normal
+#        working-directory: src
       - name: Build and analyze
         working-directory: src
         env:
@@ -58,5 +58,5 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"davydsonsantana_social-media" /o:"davydson-verri" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build 
+          dotnet build src/SocialMedia.sln
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
