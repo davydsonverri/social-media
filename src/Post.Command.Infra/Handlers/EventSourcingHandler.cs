@@ -22,7 +22,7 @@ namespace Post.Command.Infra.Handlers
             if (events == null || events.Count == 0) { return aggregate; }
 
             aggregate.ReplayEvents(events);
-            var latestVersion = events.Select(e => e.Version).Max();
+            aggregate.Version = events.Select(e => e.Version).Max();
 
             return aggregate;
         }
