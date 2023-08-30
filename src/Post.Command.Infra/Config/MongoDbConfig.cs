@@ -8,8 +8,8 @@ namespace Post.Command.Infra.Config
 {
     public class MongoDbConfig
     {
-        public string ConnectionString { get; set; }
-        public string DatabaseName { get; set; }
-        public string Collection { get; set; }
+        public required string ConnectionString { get; set; }
+        public required string DatabaseName { get; set; }
+        public required string Collection { get; set; }
     }
 }

@@ -13,12 +13,12 @@ namespace CQRS.Core.Events
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-        public DateTime TimeStamp { get; set; }
-        public Guid AggregateId { get; set; }
-        public string AggregateType { get; set; }
-        public int Version { get; set; }
-        public string EventType { get; set; }
-        public BaseEvent EventData { get; set; }
+        public required string Id { get; set; }
+        public required DateTime TimeStamp { get; set; }
+        public required Guid AggregateId { get; set; }
+        public required string AggregateType { get; set; }
+        public required int Version { get; set; }
+        public required string EventType { get; set; }
+        public required BaseEvent EventData { get; set; }
     }
 }
