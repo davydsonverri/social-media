@@ -20,7 +20,7 @@ namespace Post.Command.Infra.Stores
         {
             var eventStream = await _eventStoreRepository.FindByAggregateId(aggregateId);
 
-            if (eventStream == null || !eventStream.Any())
+            if (eventStream == null || eventStream.Count == 0)
             {
                 throw new AggregateNotFoundException("Unable to find aggregate");
             }
