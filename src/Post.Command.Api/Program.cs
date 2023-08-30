@@ -18,16 +18,19 @@ builder.Services.AddScoped<IEventStore, EventStore>();
 builder.Services.AddScoped<IEventSourcingHandler<PostAggregate>, EventSourcingHandler>();
 builder.Services.AddScoped<ICommandHandler, CommandHandler>();
 
-var commandHandler = builder.Services.BuildServiceProvider().GetRequiredService<ICommandHandler>();
-var dispatcher = new CommandDispatcher();
-dispatcher.RegisterHandler<CreatePost>(commandHandler.HandleAsync);
-dispatcher.RegisterHandler<UpdatePost>(commandHandler.HandleAsync);
-dispatcher.RegisterHandler<DeletePost>(commandHandler.HandleAsync);
-dispatcher.RegisterHandler<LikePost>(commandHandler.HandleAsync);
-dispatcher.RegisterHandler<CommentPost>(commandHandler.HandleAsync);
-dispatcher.RegisterHandler<UpdateComment>(commandHandler.HandleAsync);
-dispatcher.RegisterHandler<DeleteComment>(commandHandler.HandleAsync);
-builder.Services.AddSingleton<ICommandDispatcher>(_ => dispatcher);
+builder.Services.AddSingleton<ICommandDispatcher>(sp =>
+{
+    var commandHandler = sp.GetRequiredService<ICommandHandler>();
+    var dispatcher = new CommandDispatcher();
+    dispatcher.RegisterHandler<CreatePost>(commandHandler.HandleAsync);
+    dispatcher.RegisterHandler<UpdatePost>(commandHandler.HandleAsync);
+    dispatcher.RegisterHandler<DeletePost>(commandHandler.HandleAsync);
+    dispatcher.RegisterHandler<LikePost>(commandHandler.HandleAsync);
+    dispatcher.RegisterHandler<CommentPost>(commandHandler.HandleAsync);
+    dispatcher.RegisterHandler<UpdateComment>(commandHandler.HandleAsync);
+    dispatcher.RegisterHandler<DeleteComment>(commandHandler.HandleAsync);
+    return dispatcher;
+} );
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
