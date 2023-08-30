@@ -19,7 +19,7 @@ namespace Post.Command.Infra.Handlers
             var aggregate = new PostAggregate();
             var events = await _eventStore.GetEventsAsync(aggregateId);
 
-            if (events == null || !events.Any()) { return aggregate; }
+            if (events == null || events.Count == 0) { return aggregate; }
 
             aggregate.ReplayEvents(events);
             var latestVersion = events.Select(e => e.Version).Max();
