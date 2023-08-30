@@ -13,7 +13,7 @@ namespace CQRS.Core.Events
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public required string Id { get; set; }
+        public string Id { get; set; } = default!;
         public required DateTime TimeStamp { get; set; }
         public required Guid AggregateId { get; set; }
         public required string AggregateType { get; set; }
