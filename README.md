@@ -2,6 +2,9 @@
 
 This project is an implementation of a social media platform using the CQRS (Command Query Responsibility Segregation) and event sourcing architectural patterns. The project utilizes Kafka as the message broker, MongoDB for storing event-sourced aggregates, and SQL Server for the read model.
 
+> **Warning**
+> This project is in the initial phase. Once the bases of code works, I'll update the DOC with setup and run instructions.
+
 ## Table of Contents
 
 - [Introduction](#introduction)
