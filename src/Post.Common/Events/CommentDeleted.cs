@@ -8,7 +8,7 @@ namespace Post.Common.Events
         {
             
         }
-        public Guid CommentId { get; set; }
+        public required Guid CommentId { get; set; }
         
     }
 }
