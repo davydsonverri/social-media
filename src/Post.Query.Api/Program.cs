@@ -7,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 var con = builder.Configuration.GetConnectionString("SqlServer");
 Action<DbContextOptionsBuilder> configureDbContext = (o => o.UseLazyLoadingProxies().UseSqlServer(con));
 
-//var context = new DatabaseContext()
 builder.Services.AddDbContext<DatabaseContext>(configureDbContext);
 builder.Services.AddSingleton<DatabaseContextFactory>(new DatabaseContextFactory(configureDbContext));
 
