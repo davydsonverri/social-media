@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Post.Query.Domain.Repositories;
 using Post.Query.Infra.DataAccess;
+using Post.Query.Infra.Handlers;
+using Post.Query.Infra.Repositories;
+using EventHandler = Post.Query.Infra.Handlers.EventHandler; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +13,10 @@ Action<DbContextOptionsBuilder> configureDbContext = (o => o.UseLazyLoadingProxi
 
 builder.Services.AddDbContext<DatabaseContext>(configureDbContext);
 builder.Services.AddSingleton<DatabaseContextFactory>(new DatabaseContextFactory(configureDbContext));
+
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<IEventHandler, EventHandler>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

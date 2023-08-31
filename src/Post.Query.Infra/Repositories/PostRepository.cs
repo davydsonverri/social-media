@@ -26,7 +26,7 @@ namespace Post.Query.Infra.Repositories
             _ = await context.SaveChangesAsync();            
         }
 
-        public async Task Delete(Guid postId)
+        public async Task DeleteAsync(Guid postId)
         {
             using DatabaseContext context = _contextFactory.CreateDbContext();
             var post = await GetByIdAsync(postId);
@@ -42,7 +42,7 @@ namespace Post.Query.Infra.Repositories
             using DatabaseContext context = _contextFactory.CreateDbContext();
             return await context.Posts
                             .Include(p => p.Comments)
-                            .FirstOrDefaultAsync(x => x.PostId == postId);            
+                            .FirstOrDefaultAsync(x => x.Id == postId);            
         }
 
         public async Task<List<PostEntity>> ListAllAsync()
