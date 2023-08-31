@@ -12,7 +12,7 @@ namespace Post.Query.Domain.Repositories
         Task CreateAsync(PostEntity post);
         Task UpdateAsync(PostEntity post);
         Task Delete(Guid postId);
-        Task<PostEntity> GetByIdAsync(Guid postId);
+        Task<PostEntity?> GetByIdAsync(Guid postId);
         Task<List<PostEntity>> ListAllAsync();
         Task<List<PostEntity>> ListByAuthor(string author);        
     }
