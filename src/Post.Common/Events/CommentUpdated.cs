@@ -8,9 +8,9 @@ namespace Post.Common.Events
         {
             
         }
-        public Guid CommentId { get; set; }
-        public string Comment { get; set; }
-        public string Username { get; set; }
-        public DateTime CommentUpdateDate { get; set; }
+        public required Guid CommentId { get; set; }
+        public required string Comment { get; set; }
+        public required string Username { get; set; }
+        public required DateTime CommentUpdateDate { get; set; }
     }
 }
