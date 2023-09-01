@@ -24,6 +24,7 @@ builder.Services.AddScoped<IEventHandler, EventHandler>();
 builder.Services.Configure<ConsumerConfig>(builder.Configuration.GetSection(nameof(ConsumerConfig)));
 builder.Services.AddScoped<IEventConsumer, EventConsumer>();
 
+
 builder.Services.AddControllers();
 builder.Services.AddHostedService<ConsumerHostedService>();
 
