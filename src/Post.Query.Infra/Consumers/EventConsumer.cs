@@ -17,6 +17,7 @@ namespace Post.Query.Infra.Consumers
         public EventConsumer(IOptions<ConsumerConfig> consumerConfig, IEventHandler eventHandler)
         {
             _consumerConfig = consumerConfig.Value;
+            _eventHandler = eventHandler;
         }
 
         public void Consume(string topicId)
