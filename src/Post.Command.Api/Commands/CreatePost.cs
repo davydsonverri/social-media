@@ -4,7 +4,7 @@ namespace Post.Command.Api.Commands
 {
     public record CreatePost : BaseCommand
     {
-        public string Author { get; set; }
-        public string Message { get; set; }
+        public required string Author { get; set; }
+        public required string Message { get; set; }
     }
 }
