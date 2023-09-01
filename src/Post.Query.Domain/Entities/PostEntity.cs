@@ -8,11 +8,11 @@ namespace Post.Query.Domain.Entities
     public class PostEntity
     {
         [Key]
-        public required Guid PostId { get; set; }
+        public required Guid Id { get; set; }
         public required string Author { get; set; }
         public required DateTime PostDate { get; set; }
         public required string Message { get; set; }
         public int Likes { get; set; }
-        public virtual required ICollection<CommentEntity> Comments { get; set; }
+        public virtual ICollection<CommentEntity>? Comments { get; set; }
     }
 }

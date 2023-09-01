@@ -4,7 +4,7 @@ namespace Post.Command.Api.Commands
 {
     public record CommentPost: BaseCommand
     {
-        public string Comment { get; set; }
-        public string Username { get; set; }
+        public required string Comment { get; set; }
+        public required string Username { get; set; }
     }
 }

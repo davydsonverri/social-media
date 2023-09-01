@@ -10,13 +10,13 @@ namespace Post.Query.Domain.Entities
         [Key]
         public required Guid Id { get; set; }
         public required string Username { get; set; }
-        public required string CommentDate { get; set; }
+        public required DateTime CommentDate { get; set; }
         public required string Comment { get; set; }
         public required bool Edited { get; set; }
         public required Guid PostId { get; set; }
 
         [JsonIgnore]
-        public virtual required PostEntity Post { get; set; }
+        public virtual PostEntity? Post { get; set; }
 
     }
 }

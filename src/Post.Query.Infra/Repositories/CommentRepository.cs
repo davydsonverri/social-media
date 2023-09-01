@@ -27,7 +27,7 @@ namespace Post.Query.Infra.Repositories
             _ = await context.SaveChangesAsync();
         }
 
-        public async Task Delete(Guid commentId)
+        public async Task DeleteAsync(Guid commentId)
         {
             using DatabaseContext context = _contextFactory.CreateDbContext();
             var comment = await GetByIdAsync(commentId);
