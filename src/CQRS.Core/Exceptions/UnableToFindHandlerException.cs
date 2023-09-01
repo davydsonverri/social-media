@@ -8,7 +8,7 @@ namespace CQRS.Core.Exceptions
 {
     public class UnableToFindHandlerException : Exception
     {
-        public UnableToFindHandlerException(string handlerName) : base()
+        public UnableToFindHandlerException(string handlerName) : base(FormatMessage(handlerName))
         {
             
         }
