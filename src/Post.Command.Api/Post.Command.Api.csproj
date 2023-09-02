@@ -16,10 +16,7 @@
     <ProjectReference Include="..\CQRS.Core\CQRS.Core.csproj" />
     <ProjectReference Include="..\Post.Command.Domain\Post.Command.Domain.csproj" />
     <ProjectReference Include="..\Post.Command.Infra\Post.Command.Infra.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Post.Common\Post.Common.csproj" />
   </ItemGroup>
 
 </Project>
