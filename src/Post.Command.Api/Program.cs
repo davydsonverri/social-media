@@ -25,7 +25,7 @@ builder.Services.AddScoped<ICommandHandler, CommandHandler>();
 
 builder.Services.AddSingleton<ICommandDispatcher>(sp =>
 {
-    var commandHandler = sp.GetRequiredService<ICommandHandler>();
+    var commandHandler = sp.CreateScope().ServiceProvider.GetRequiredService<ICommandHandler>();
     var dispatcher = new CommandDispatcher();
     dispatcher.RegisterHandler<CreatePost>(commandHandler.HandleAsync);
     dispatcher.RegisterHandler<UpdatePost>(commandHandler.HandleAsync);
