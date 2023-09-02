@@ -16,7 +16,7 @@ var con = builder.Configuration.GetConnectionString("SqlServer");
 Action<DbContextOptionsBuilder> configureDbContext = (o => o.UseLazyLoadingProxies().UseSqlServer(con));
 
 builder.Services.AddDbContext<DatabaseContext>(configureDbContext);
-builder.Services.AddSingleton<DatabaseContextFactory>(new DatabaseContextFactory(configureDbContext));
+builder.Services.AddSingleton(new DatabaseContextFactory(configureDbContext));
 
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
