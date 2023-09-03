@@ -64,7 +64,7 @@ services:
     command: "bash -c 'echo Waiting for Kafka to be ready... && \
                cub kafka-ready -b kafka:29092 1 30 && \
                kafka-topics --create --topic sample_topic --partitions 3 --replication-factor 1 --if-not-exists --bootstrap-server kafka:29092 && \
-               kafka-topics --create --topic sm_post_events --partitions 2 --replication-factor 1 --if-not-exists --bootstrap-server kafka:29092'"
+               kafka-topics --create --topic sm_post_events --partitions 3 --replication-factor 1 --if-not-exists --bootstrap-server kafka:29092'"
 
 volumes:
   kafka_data:
@@ -75,5 +75,5 @@ volumes:
     driver: local    
    
 networks:
-  social_media_network:
+  default:
     external: true   
