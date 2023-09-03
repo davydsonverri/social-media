@@ -4,5 +4,9 @@ namespace CQRS.Core.Commands
 {
     public abstract record BaseCommand : Message
     {
+        protected BaseCommand()
+        {
+            
+        }
     }
 }

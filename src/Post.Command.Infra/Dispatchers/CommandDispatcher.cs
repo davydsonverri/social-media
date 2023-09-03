@@ -28,7 +28,7 @@ namespace Post.Command.Infra.Dispatchers
                 await handler(command);
             } else
             {
-                throw new ArgumentNullException(nameof(handler), "Command handler not registered");
+                throw new ArgumentNullException(command.GetType().ToString(), "Command handler not registered");
             }
         }
     }
