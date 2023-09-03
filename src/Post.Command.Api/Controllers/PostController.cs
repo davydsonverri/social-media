@@ -92,5 +92,13 @@ namespace Post.Command.Api.Controllers
             return await DispatchCommand(command);
         }
 
+        [HttpDelete("{postId}/comments/{commentId}")]
+        public async Task<ActionResult> DeleteComments(Guid postId, Guid commentId, DeleteComment command)
+        {
+            command.Id = postId;
+            command.CommentId = commentId;
+            return await DispatchCommand(command);
+        }
+
     }
 }
