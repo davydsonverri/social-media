@@ -4,6 +4,9 @@ namespace Post.Query.Api.Queries
 {
     public record FindAllPostsQuery : BaseQuery
     {
-
+        public FindAllPostsQuery()
+        {
+            
+        }
     }
 }
