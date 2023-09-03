@@ -76,5 +76,13 @@ namespace Post.Command.Api.Controllers
         {
             return await DispatchCommand(new LikePost { Id = id });
         }
+
+        [HttpPost("{id}/comments")]
+        public async Task<ActionResult> PostComments(Guid id, CommentPost command)
+        {
+            command.Id = id;
+            return await DispatchCommand(command);            
+        }
+
     }
 }
