@@ -80,38 +80,8 @@ namespace Post.Command.Api.Controllers
         [HttpPost("{id}/comments")]
         public async Task<ActionResult> PostComments(Guid id, CommentPost command)
         {
-            try
-            {
-                command.Id = id;
-                await _commandDispatcher.SendAsync(command);
-
-                return StatusCode(StatusCodes.Status201Created, new BaseResponse
-                {
-                    Message = "Comment creation request completed successfuly"
-                });
-            } catch (InvalidOperationException ex)
-            {
-                _logger.LogWarning(ex, "Client made a bad request");
-                return BadRequest(new BaseResponse()
-                {
-                    Message = ex.Message
-                });
-            } catch (AggregateNotFoundException ex)
-            {
-                _logger.LogWarning(ex, "Unable to find post with id {postId}", command.Id);
-                return BadRequest(new BaseResponse()
-                {
-                    Message = ex.Message
-                });
-            } catch (Exception ex)
-            {
-                const string errorMessage = "Error while processing request to comment a post";
-                _logger.LogError(ex, errorMessage);
-                return StatusCode(StatusCodes.Status500InternalServerError, new BaseResponse()
-                {
-                    Message = errorMessage
-                });
-            }
+            command.Id = id;
+            return await DispatchCommand(command);            
         }
 
     }
