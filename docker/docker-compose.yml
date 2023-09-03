@@ -4,7 +4,7 @@ services:
   kafka:
     image: docker.io/bitnami/kafka:3.5
     hostname: kafka
-    container_name: kafka    
+    container_name: kafka
     ports:
       - "9092:9092"
     restart: always
@@ -26,8 +26,9 @@ services:
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
 
   mongo:
-    container_name: mongo-db
-    image: mongo
+    image: mongo:7.0.0
+    hostname: mongodb
+    container_name: mongo-db    
     ports:
       - "27017:27017"
     restart: always
@@ -35,20 +36,22 @@ services:
       - "mongo_data:/data/db"
 
   sql-server-db:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    hostname: sqlserver
     container_name: sql-server-db
-    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu          
     ports:
       - "1433:1433"
     volumes:
-      - "sqlserver_data:/var/opt/mssql"      
+      - "sqlserver_data:/var/opt/mssql"
     environment:
       SA_PASSWORD: "FA22lFI9gRpUzfe"
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Express"
 
   kafka-ui:
-    container_name: kafka-ui
-    image: provectuslabs/kafka-ui:latest
+    image: provectuslabs/kafka-ui:b0583a3ca7d58bd9978e26a67bb8927fcbf03c42
+    hostname: kafkaui
+    container_name: kafka-ui    
     ports:
       - 8080:8080
     depends_on:
@@ -57,14 +60,15 @@ services:
       KAFKA_CLUSTERS_0_NAME: socialmedia
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
 
-  kafka-init-topics:
+  kafka-startup-setup:
     image: confluentinc/cp-kafka:7.2.1
+    container_name: kafka-startup-setup
     depends_on:
       - kafka
     command: "bash -c 'echo Waiting for Kafka to be ready... && \
                cub kafka-ready -b kafka:29092 1 30 && \
                kafka-topics --create --topic sample_topic --partitions 3 --replication-factor 1 --if-not-exists --bootstrap-server kafka:29092 && \
-               kafka-topics --create --topic sm_post_events --partitions 2 --replication-factor 1 --if-not-exists --bootstrap-server kafka:29092'"
+               kafka-topics --create --topic sm_post_events --partitions 3 --replication-factor 1 --if-not-exists --bootstrap-server kafka:29092'"
 
 volumes:
   kafka_data:
@@ -72,8 +76,8 @@ volumes:
   mongo_data:
     driver: local
   sqlserver_data:
-    driver: local    
+    driver: local
    
 networks:
-  social_media_network:
-    external: true   
+  bridge:
+    external: true
