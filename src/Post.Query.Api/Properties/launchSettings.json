@@ -17,7 +17,7 @@
       "applicationUrl": "http://localhost:5156",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "KAFKA_TOPIC": "SocialMediaPostEvent"
+        "KAFKA_TOPIC": "sm_post_events"
       }
     },
     "https": {
@@ -28,7 +28,7 @@
       "applicationUrl": "https://localhost:7015;http://localhost:5156",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "KAFKA_TOPIC": "SocialMediaPostEvent"
+        "KAFKA_TOPIC": "sm_post_events"
       }
     },
     "IIS Express": {
@@ -37,7 +37,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "KAFKA_TOPIC": "SocialMediaPostEvent"
+        "KAFKA_TOPIC": "sm_post_events"
       }
     }
   }
