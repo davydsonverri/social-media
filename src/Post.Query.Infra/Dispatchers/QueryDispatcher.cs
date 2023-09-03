@@ -29,7 +29,7 @@ namespace Post.Query.Infra.Dispatchers
                 return await handlers(query);
             } else
             {
-                throw new ArgumentNullException(nameof(handlers), "Query handler not registered");
+                throw new ArgumentNullException(query.GetType().ToString(), "Query handler not registered");
             }            
         }
     }

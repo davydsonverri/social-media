@@ -2,5 +2,9 @@
 {
     public abstract record class BaseQuery
     {
+        protected BaseQuery()
+        {
+            
+        }
     }
 }
