@@ -58,16 +58,23 @@ namespace Post.Command.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(CreatePost command)
+        public async Task<ActionResult> PostPosts(CreatePost command)
         {
             command.Id = Guid.NewGuid();
             return await DispatchCommand(command);
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult> Patch(Guid id, UpdatePost command)
+        public async Task<ActionResult> PatchPosts(Guid id, UpdatePost command)
         {
             command.Id = id;
+            return await DispatchCommand(command);
+        }
+
+        [HttpDelete("{postId}")]
+        public async Task<ActionResult> DeletePosts(Guid postId, DeletePost command)
+        {
+            command.Id = postId;
             return await DispatchCommand(command);
         }
 
@@ -99,6 +106,5 @@ namespace Post.Command.Api.Controllers
             command.CommentId = commentId;
             return await DispatchCommand(command);
         }
-
     }
 }
