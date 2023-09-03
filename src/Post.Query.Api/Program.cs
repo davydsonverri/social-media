@@ -27,6 +27,7 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IEventHandler, EventHandler>();
 builder.Services.Configure<ConsumerConfig>(builder.Configuration.GetSection(nameof(ConsumerConfig)));
 builder.Services.AddScoped<IEventConsumer, EventConsumer>();
+builder.Services.AddScoped<IQueryHandler, QueryHandler>();
 
 builder.Services.AddSingleton<IQueryDispatcher<PostEntity>>(sp =>
 {
