@@ -84,5 +84,13 @@ namespace Post.Command.Api.Controllers
             return await DispatchCommand(command);            
         }
 
+        [HttpPatch("{postId}/comments/{commentId}")]
+        public async Task<ActionResult> PatchComments(Guid postId, Guid commentId,UpdateComment command)
+        {
+            command.Id = postId;
+            command.CommentId = commentId;
+            return await DispatchCommand(command);
+        }
+
     }
 }
