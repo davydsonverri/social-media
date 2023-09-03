@@ -1,6 +1,5 @@
 ﻿using CQRS.Core.Exceptions;
 using CQRS.Core.Infra;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Post.Command.Api.Commands;
 using Post.Command.Api.DTOs;
@@ -84,6 +83,42 @@ namespace Post.Command.Api.Controllers
             } catch (Exception ex)
             {
                 const string errorMessage = "Error while processing request to edit a post";
+                _logger.LogError(ex, errorMessage);
+                return StatusCode(StatusCodes.Status500InternalServerError, new BaseResponse()
+                {
+                    Message = errorMessage
+                });
+            }
+        }
+
+        [HttpPost("{id}/like")]
+        public async Task<ActionResult> Like(Guid id)
+        {
+            try
+            {
+                await _commandDispatcher.SendAsync(new LikePost { Id = id });
+
+                return StatusCode(StatusCodes.Status201Created, new BaseResponse
+                {
+                    Message = "Like post request completed successfuly"
+                });
+            } catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Client made a bad request");
+                return BadRequest(new BaseResponse()
+                {
+                    Message = ex.Message
+                });
+            } catch (AggregateNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "Unable to find post with id {postId}", id);
+                return BadRequest(new BaseResponse()
+                {
+                    Message = ex.Message
+                });
+            } catch (Exception ex)
+            {
+                const string errorMessage = "Error while processing request to like a post";
                 _logger.LogError(ex, errorMessage);
                 return StatusCode(StatusCodes.Status500InternalServerError, new BaseResponse()
                 {
