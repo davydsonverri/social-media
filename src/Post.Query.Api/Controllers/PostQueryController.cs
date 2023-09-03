@@ -39,12 +39,11 @@ namespace Post.Query.Api.Controllers
                 });
             } catch (Exception ex)
             {
-                string errorMessage = $"Error while processing {typeof(ListAllPostsQuery)}";
-                _logger.LogError(ex, errorMessage);
+                _logger.LogError(ex, "Error while processing {queryType}", typeof(ListAllPostsQuery));
 
                 return StatusCode(StatusCodes.Status500InternalServerError, new BaseResponse
                 {
-                    Message = errorMessage
+                    Message = string.Format("Error while processing {0}", typeof(ListAllPostsQuery))
                 });
             }
         }
@@ -68,12 +67,11 @@ namespace Post.Query.Api.Controllers
                 });
             } catch (Exception ex)
             {
-                string errorMessage = $"Error while processing {typeof(FindPostByIdQuery)}";
-                _logger.LogError(ex, errorMessage);
+                _logger.LogError(ex, "Error while processing {queryType}", typeof(FindPostByIdQuery));
 
                 return StatusCode(StatusCodes.Status500InternalServerError, new BaseResponse
                 {
-                    Message = errorMessage
+                    Message = string.Format("Error while processing {0}", typeof(FindPostByIdQuery))
                 });
             }
         }
@@ -96,13 +94,12 @@ namespace Post.Query.Api.Controllers
                     Message = $"Record count {posts.Count}"
                 });
             } catch (Exception ex)
-            {
-                string errorMessage = $"Error while processing {typeof(FindPostByAuthorQuery)}";
-                _logger.LogError(ex, errorMessage);
+            {                
+                _logger.LogError(ex, "Error while processing {queryType}", typeof(FindPostByAuthorQuery));
 
                 return StatusCode(StatusCodes.Status500InternalServerError, new BaseResponse
                 {
-                    Message = errorMessage
+                    Message = string.Format("Error while processing {0}", typeof(FindPostByAuthorQuery))
                 });
             }
         }
