@@ -75,7 +75,7 @@ namespace Post.Query.Infra.Handlers
 
         public async Task On(CommentUpdated @event)
         {
-            var comment = await _commentRepository.GetByIdAsync(@event.Id);
+            var comment = await _commentRepository.GetByIdAsync(@event.CommentId);
 
             if (comment == null) return;
 
