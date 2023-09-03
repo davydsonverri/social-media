@@ -1,4 +1,5 @@
-﻿using CQRS.Core.Infra;
+﻿using CQRS.Core.Exceptions;
+using CQRS.Core.Infra;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Post.Command.Api.Commands;
@@ -7,7 +8,7 @@ using Post.Common.DTOs;
 
 namespace Post.Command.Api.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/posts")]
     [ApiController]
     public class PostController : ControllerBase
     {
@@ -49,6 +50,43 @@ namespace Post.Command.Api.Controllers
                 return BadRequest(new CreatePostResponse()
                 {
                     PostId = id,
+                    Message = errorMessage
+                });
+            }
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> Patch(Guid id, UpdatePost command)
+        {
+            try
+            {
+                command.Id = id;
+                await _commandDispatcher.SendAsync(command);
+
+                return StatusCode(StatusCodes.Status201Created, new BaseResponse
+                {
+                    Message = "Post creation request completed successfuly"
+                });
+            } catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Client made a bad request");
+                return BadRequest(new BaseResponse()
+                {
+                    Message = ex.Message
+                });
+            } catch (AggregateNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "Unable to find post with id {postId}", command.Id);
+                return BadRequest(new BaseResponse()
+                {
+                    Message = ex.Message
+                });
+            } catch (Exception ex)
+            {
+                const string errorMessage = "Error while processing request to edit a post";
+                _logger.LogError(ex, errorMessage);
+                return StatusCode(StatusCodes.Status500InternalServerError, new BaseResponse()
+                {
                     Message = errorMessage
                 });
             }
