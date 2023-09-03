@@ -2,9 +2,9 @@
 
 namespace Post.Query.Api.Queries
 {
-    public record FindAllPostsQuery : BaseQuery
+    public record ListAllPostsQuery : BaseQuery
     {
-        public FindAllPostsQuery()
+        public ListAllPostsQuery()
         {
             
         }
