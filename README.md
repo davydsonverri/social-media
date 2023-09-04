@@ -1,9 +1,7 @@
-# Social Media Platform - CQRS and Event Sourcing Project
+
+# Social Media Platform using CQRS and Event Sourcing
 
 This project is an implementation of a social media platform using the CQRS (Command Query Responsibility Segregation) and event sourcing architectural patterns. The project utilizes Kafka as the message broker, MongoDB for storing event-sourced aggregates, and SQL Server for the read model.
-
-> **Warning**
-> This project is in it's initial phase. Once the base of code works, I'll update the DOC with setup and run instructions, then code some tests. :wink:
 
 ## Table of Contents
 
@@ -11,52 +9,106 @@ This project is an implementation of a social media platform using the CQRS (Com
 - [Architecture](#architecture)
 - [Features](#features)
 - [Getting Started](#getting-started)
-- [Setup](#setup)
+  - [Prerequisites](#prerequisites)
+  - [Setup](#setup)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Introduction
 
-This project is designed to showcase how CQRS and event sourcing can be used to build a social media platform. It leverages Kafka for event-driven communication between microservices, MongoDB for storing event-sourced aggregates, and SQL Server for efficient querying of the read model.
+This project designed to showcase how CQRS and event sourcing can be implemented to build a social media platform. It leverages Kafka for event-driven communication between microservices, MongoDB for storing event-sourced aggregates, and SQL Server for efficient querying as read model.
 
 ## Architecture
 
-The project follows a microservices architecture with the following components:
-
-- Command Microservices: Responsible for handling commands and producing events.
-- Event Store: MongoDB database to store event-sourced aggregates.
-- Read Microservices: Responsible for querying data and maintaining the read model.
-- Message Broker: Kafka for asynchronous communication between microservices.
+Will be available soon
 
 ## Features
 
-- User registration and authentication
-- Posting and commenting on posts
-- Following and unfollowing users
-- Real-time updates using Kafka
-- Efficient querying using read model
+- Publish and edit posts
+- Commenting and liking posts
+- CQRS
+- Event Sourcing with MongoDB as EventStore
+- SQL Server as read database for queries
 
 ## Getting Started
 
-To get started with the project, follow these steps:
+To get a local copy up and running follow these steps.
 
-1. Clone the repository: `git clone https://github.com/your-username/social-media-cqrs-event-sourcing.git`
-2. Navigate to the project directory: `cd social-media-cqrs-event-sourcing`
+### Prerequisites
+#### Docker
+Regardless of your operating system, you must install a container virtualization tool to run all infrastructure resources(Apache Kafka, MongoDB and others). We suggest [Docker](https://www.docker.com/), but feel free to use one you prefer.
+
+- [Install Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/)
+- [Install Docker Desktop on Linux](https://docs.docker.com/desktop/install/linux-install/)
+
+After installation run following code on terminal:
+
+    docker --version
+You should see something like this:
+
+    Docker version 24.0.5, build ced0996
+
+#### .NET Core 7.0
+This project were build on top of .NET 7.0. Make sure you have it installed.
+
+[Install .NET 7.0 (Windows, Linux, MacOS)](https://dotnet.microsoft.com/pt-br/download/dotnet/7.0)
+
+After installation run following code on terminal:
+
+    dotnet --list-sdks
+You should see something like this:
+
+    7.0.400 [C:\Program Files\dotnet\sdk]
 
 ## Setup
+### Clone source code
+First, you should clone repository: 
 
-1. Install and set up Kafka on your machine.
-2. Set up MongoDB and create the required databases and collections.
-3. Set up SQL Server and create the necessary tables for the read model.
+    git clone https://github.com/davydsonsantana/social-media.git
+
+### Set SQL Server connection string
+Open file `social-media/src/Post.Query.Api/appsettings.Development.json` and set connection string as follow:
+
+    "ConnectionStrings": {
+       "SqlServer": "Server=localhost,1433;Database=SocialMedia;User Id=sa;Password=FA22lFI9gRpUzfe;Encrypt=False;"
+    }
+
+### Startup infrastructure
+Open terminal and navigate to project directory: 
+
+    cd social-media
+Navigate to docker directory: 
+
+    cd docker
+Startup container as follow:
+
+    docker-compose up -d
+
+You should see something like this on you Docker Desktop:
+
+![image](https://github.com/davydsonsantana/social-media/assets/1733168/ffa8bfb2-32fb-4db3-b50c-52a244e2c753)
+
 
 ## Usage
 
-1. Start the command microservices to handle user actions and produce events.
-2. Start the event store service using MongoDB.
-3. Start the read microservices to handle queries and populate the read model.
-4. Monitor Kafka topics for real-time updates.
-5. Access the user interface or API endpoints to interact with the social media platform.
+### Visual Studio 2022
+
+1. Open solution file `social-media/src/SocialMedia.sln`.
+2. Open `Configure Startup Projects...` as follow:
+   
+   ![image](https://github.com/davydsonsantana/social-media/assets/1733168/c9925c91-ca05-4a2f-8e85-aaa6e5bed9a7)
+   
+3. Setup `Multiple startup projects` as follow:
+   
+   ![image](https://github.com/davydsonsantana/social-media/assets/1733168/2cbfad05-0008-44f6-beca-0323ab0ee268)
+   
+4. Just click on `Start` or press F5.
+  
+    ![image](https://github.com/davydsonsantana/social-media/assets/1733168/1ff27b8b-4912-4533-af4b-f9c3aeca8ed1)
+
+5. Two Swagger tabs will be open on your browser, first for `Post.Command.Api` and seccond one for `Post.Query.Api`.
+6. Enjoy.
 
 ## Contributing
 
