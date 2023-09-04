@@ -11,7 +11,7 @@ This project is an implementation of a social media platform using the CQRS (Com
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Setup](#setup)
-- [Usage - Visual Studio 2022](#usage---visual-studio-2022)
+- [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -90,7 +90,9 @@ You should see something like this on you Docker Desktop:
 ![image](https://github.com/davydsonsantana/social-media/assets/1733168/ffa8bfb2-32fb-4db3-b50c-52a244e2c753)
 
 
-## Usage - Visual Studio 2022
+## Usage
+
+### Visual Studio 2022
 
 1. Open solution file `social-media/src/SocialMedia.sln`.
 2. Open `Configure Startup Projects...` as follow:
