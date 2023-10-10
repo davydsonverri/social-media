@@ -47,6 +47,7 @@ builder.Services.AddSingleton<ICommandDispatcher>(sp =>
     dispatcher.RegisterHandler<CommentPost>(commandHandler.HandleAsync);
     dispatcher.RegisterHandler<UpdateComment>(commandHandler.HandleAsync);
     dispatcher.RegisterHandler<DeleteComment>(commandHandler.HandleAsync);
+    dispatcher.RegisterHandler<RestoreReadDb>(commandHandler.HandleAsync);
     return dispatcher;
 } );
 
