@@ -79,5 +79,43 @@ namespace Post.Command.Domain.Tests.Aggregates
                .Should().Throw<InvalidOperationException>()
                .WithMessage("Unable to like deleted post.");
         }
+
+        [Fact(DisplayName = "Must be able to add comment to 'Post'")]
+        [Trait("Aggregate", "Post")]
+        public void Post_Comment_MustAddNewComment()
+        {
+            var expectedUserName = _faker.Internet.UserName();
+            var expectedComment = new Tuple<string, string>(expectedUserName, string.Join(" ", _faker.Lorem.Words(_faker.Random.Int(3, 50))));
+            var sut = _postAggregateFixture.BuildValidPost();
+
+            sut.AddComment(expectedComment.Item1, expectedComment.Item2);
+
+            sut.Comments.First().Value.Should().Be(expectedComment);
+        }
+
+        [Fact(DisplayName = "Must be unable to add comment to 'Post' when 'Post' is deleted")]
+        [Trait("Aggregate", "Post")]
+        public void AddComment_WhenPostIsDeleted_MustThrowInvalidOperationException()
+        {
+            var expectedUserName = _faker.Internet.UserName();
+            var expectedComment = string.Join(" ", _faker.Lorem.Words(_faker.Random.Int(3, 50)));
+            var sut = _postAggregateFixture.BuildDeletedPost();
+            
+            sut.Invoking(x => x.AddComment(expectedUserName, expectedUserName))
+               .Should().Throw<InvalidOperationException>()
+               .WithMessage("Unable to comment to an inactive post.");
+        }
+        
+        [Fact(DisplayName = "Must be unable to add comment to 'Post' with empty message")]
+        [Trait("Aggregate", "Post")]
+        public void AddComment_WithEmptyMessage_MustThrowInvalidOperationException()
+        {
+            var expectedUserName = _faker.Internet.UserName();            
+            var sut = _postAggregateFixture.BuildValidPost();
+
+            sut.Invoking(x => x.AddComment(string.Empty, expectedUserName))
+               .Should().Throw<InvalidOperationException>()
+               .WithMessage("The value of comment cannot be empty.");
+        }
     }
 }
