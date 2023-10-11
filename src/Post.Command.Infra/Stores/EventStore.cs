@@ -70,7 +70,7 @@ namespace Post.Command.Infra.Stores
 
             if(eventStream == null || !eventStream.Any())
             {
-                throw new ArgumentNullException(nameof(eventStream), "Could not retrieve event stream from the event store!");
+                throw new AggregateNotFoundException("Could not retrieve event stream from the event store!");
             }
 
             return eventStream.Select(x => x.AggregateId).Distinct().ToList();
