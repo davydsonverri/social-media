@@ -9,5 +9,6 @@
         Task HandleAsync(CommentPost command);
         Task HandleAsync(UpdateComment command);
         Task HandleAsync(DeleteComment command);
+        Task HandleAsync(RestoreReadDb command);
     }
 }

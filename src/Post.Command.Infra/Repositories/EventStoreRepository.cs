@@ -27,5 +27,10 @@ namespace Post.Command.Infra.Repositories
         {
             return await _eventStoreCollection.Find(x => x.AggregateId == aggregateId).ToListAsync();
         }
+
+        public async Task<List<EventModel>> FindAllAsync()
+        {
+            return await _eventStoreCollection.Find(_ => true).ToListAsync();
+        }
     }
 }
