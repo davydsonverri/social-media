@@ -112,12 +112,12 @@ namespace Post.Command.Domain.Aggregates
         {
             if (!Active)
             {
-                throw new InvalidOperationException("Unable to edit comment of an inactive post");
+                throw new InvalidOperationException("Unable to edit comment of an inactive post.");
             }
 
             if (!Comments[commentId].Item2.Equals(username, StringComparison.CurrentCultureIgnoreCase))
             {
-                throw new InvalidOperationException("You are not allowed to edit a comment that was made by another user");
+                throw new InvalidOperationException("You are not allowed to edit a comment that was made by another user.");
             }
 
             RaiseEvent(new CommentUpdated { 
@@ -139,12 +139,12 @@ namespace Post.Command.Domain.Aggregates
         {
             if (!Active)
             {
-                throw new InvalidOperationException("Unable to remove a comment from an inactive post");
+                throw new InvalidOperationException("Unable to remove a comment from an inactive post.");
             }
 
             if (!Comments[commentId].Item2.Equals(username, StringComparison.CurrentCultureIgnoreCase))
             {
-                throw new InvalidOperationException("You are not allowed to remove a comment that was made by another user");
+                throw new InvalidOperationException("You are not allowed to remove a comment that was made by another user.");
             }
 
             RaiseEvent(new CommentDeleted
@@ -164,12 +164,12 @@ namespace Post.Command.Domain.Aggregates
         {
             if (!Active)
             {
-                throw new InvalidOperationException("The post has already been removed");
+                throw new InvalidOperationException("The post has already been removed.");
             }
 
             if (!Author.Equals(username, StringComparison.CurrentCultureIgnoreCase))
             {
-                throw new InvalidOperationException("You are not allowed to delete a post from someone else!");
+                throw new InvalidOperationException("You are not allowed to delete a post from someone else.");
             }
 
             RaiseEvent(new PostDeleted

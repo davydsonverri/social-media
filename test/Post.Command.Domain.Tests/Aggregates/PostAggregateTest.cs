@@ -100,22 +100,98 @@ namespace Post.Command.Domain.Tests.Aggregates
             var expectedUserName = _faker.Internet.UserName();
             var expectedComment = string.Join(" ", _faker.Lorem.Words(_faker.Random.Int(3, 50)));
             var sut = _postAggregateFixture.BuildDeletedPost();
-            
+
             sut.Invoking(x => x.AddComment(expectedUserName, expectedUserName))
                .Should().Throw<InvalidOperationException>()
                .WithMessage("Unable to comment to an inactive post.");
         }
-        
+
         [Fact(DisplayName = "Must be unable to add comment to 'Post' with empty message")]
         [Trait("Aggregate", "Post")]
         public void AddComment_WithEmptyMessage_MustThrowInvalidOperationException()
         {
-            var expectedUserName = _faker.Internet.UserName();            
+            var expectedUserName = _faker.Internet.UserName();
             var sut = _postAggregateFixture.BuildValidPost();
 
             sut.Invoking(x => x.AddComment(string.Empty, expectedUserName))
                .Should().Throw<InvalidOperationException>()
                .WithMessage("The value of comment cannot be empty.");
+        }
+
+        [Fact(DisplayName = "Must be able to update 'Post' comment")]
+        [Trait("Aggregate", "Post")]
+        public void Post_Comment_MustUpdateComment()
+        {
+            var sut = _postAggregateFixture.BuildValidPostWithComment();
+            var existingCommentId = sut.Comments.First().Key;
+            var expectedUserName = sut.Comments.First().Value.Item2;
+            var expectedComment = string.Join(" ", _faker.Lorem.Words(_faker.Random.Int(3, 50)));
+
+            sut.UpdateComment(existingCommentId, expectedComment, expectedUserName);
+
+            sut.Comments.First().Value.Item1.Should().Be(expectedComment);
+        }
+
+        [Fact(DisplayName = "Must be unable to update 'Post' comment when 'Post' is deleted")]
+        [Trait("Aggregate", "Post")]
+        public void UpdateComment_WhenPostIsDeleted_MustThrowInvalidOperationException()
+        {
+            var sut = _postAggregateFixture.BuildDeletedPostWithComments();
+            var existingCommentId = sut.Comments.First().Key;
+            var expectedUserName = sut.Comments.First().Value.Item2;
+            var expectedComment = string.Join(" ", _faker.Lorem.Words(_faker.Random.Int(3, 50)));
+
+            sut.Invoking(x => x.UpdateComment(existingCommentId, expectedComment, expectedUserName))
+               .Should().Throw<InvalidOperationException>()
+               .WithMessage("Unable to edit comment of an inactive post.");
+        }
+
+        [Fact(DisplayName = "Must be unable to update 'Post' comment from someone else")]
+        [Trait("Aggregate", "Post")]
+        public void UpdateComment_WhenPostIsFromSomeoneElse_MustThrowInvalidOperationException()
+        {
+            var sut = _postAggregateFixture.BuildValidPostWithComment();
+            var existingCommentId = sut.Comments.First().Key;
+            var expectedUserName = _faker.Internet.UserName();
+            var expectedComment = string.Join(" ", _faker.Lorem.Words(_faker.Random.Int(3, 50)));
+
+            sut.Invoking(x => x.UpdateComment(existingCommentId, expectedComment, expectedUserName))
+               .Should().Throw<InvalidOperationException>()
+               .WithMessage("You are not allowed to edit a comment that was made by another user.");
+        }
+
+        [Fact(DisplayName = "Must be able to delete a 'Post'")]
+        [Trait("Aggregate", "Post")]
+        public void Post_Delete_MustDeletePost()
+        {
+            var sut = _postAggregateFixture.BuildValidPostWithComment();
+
+            sut.DeletePost(sut.Author);
+
+            sut.Active.Should().BeFalse();
+        }
+
+        [Fact(DisplayName = "Must be unable to delete a deleted 'Post'")]
+        [Trait("Aggregate", "Post")]
+        public void DeletePost_WhenPostIsDeleted_MustThrowInvalidOperationException()
+        {
+            var sut = _postAggregateFixture.BuildDeletedPostWithComments();            
+
+            sut.Invoking(x => x.DeletePost(sut.Author))
+               .Should().Throw<InvalidOperationException>()
+               .WithMessage("The post has already been removed.");
+        }
+
+        [Fact(DisplayName = "Must be unable to delete a deleted 'Post'")]
+        [Trait("Aggregate", "Post")]
+        public void DeletePost_WhenPostIsFromSomeoneElse_MustThrowInvalidOperationException()
+        {
+            var sut = _postAggregateFixture.BuildValidPostWithComment();
+            var otherUser = _faker.Internet.UserName();
+
+            sut.Invoking(x => x.DeletePost(otherUser))
+               .Should().Throw<InvalidOperationException>()
+               .WithMessage("You are not allowed to delete a post from someone else.");
         }
     }
 }
