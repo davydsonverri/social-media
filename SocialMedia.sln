@@ -3,28 +3,37 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34004.107
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Command.Api", "Post.Command.Api\Post.Command.Api.csproj", "{E939F835-278F-4010-9F52-550637738BB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Command.Api", "src\Post.Command.Api\Post.Command.Api.csproj", "{E939F835-278F-4010-9F52-550637738BB1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Command.Domain", "Post.Command.Domain\Post.Command.Domain.csproj", "{5D2FDA06-FBFE-44E1-9BA2-93C364D83261}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Command.Domain", "src\Post.Command.Domain\Post.Command.Domain.csproj", "{5D2FDA06-FBFE-44E1-9BA2-93C364D83261}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Command.Infra", "Post.Command.Infra\Post.Command.Infra.csproj", "{B7CFC836-0DB9-4986-ACC2-F54893D18446}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Command.Infra", "src\Post.Command.Infra\Post.Command.Infra.csproj", "{B7CFC836-0DB9-4986-ACC2-F54893D18446}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Query.Api", "Post.Query.Api\Post.Query.Api.csproj", "{30251BA4-19B8-461C-99B6-2301C6A781BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Query.Api", "src\Post.Query.Api\Post.Query.Api.csproj", "{30251BA4-19B8-461C-99B6-2301C6A781BE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Query.Domain", "Post.Query.Domain\Post.Query.Domain.csproj", "{B98267ED-28C7-48EC-B0C9-4B1FD82911E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Query.Domain", "src\Post.Query.Domain\Post.Query.Domain.csproj", "{B98267ED-28C7-48EC-B0C9-4B1FD82911E5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Query.Infra", "Post.Query.Infra\Post.Query.Infra.csproj", "{796A0D55-E58B-41D7-B14A-9D12387DE886}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Query.Infra", "src\Post.Query.Infra\Post.Query.Infra.csproj", "{796A0D55-E58B-41D7-B14A-9D12387DE886}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQRS.Core", "CQRS.Core\CQRS.Core.csproj", "{78AC12C1-6DF0-49D6-AC36-839F1C2637FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQRS.Core", "src\CQRS.Core\CQRS.Core.csproj", "{78AC12C1-6DF0-49D6-AC36-839F1C2637FD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Common", "Post.Common\Post.Common.csproj", "{E4D63FA4-4175-42A2-BAEC-B9D9BE91077B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Common", "src\Post.Common\Post.Common.csproj", "{E4D63FA4-4175-42A2-BAEC-B9D9BE91077B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1EDA3B8A-8F5B-4953-93F2-0CFFE06EA291}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-compose", "docker-compose", "{BF69E139-2BAB-47DE-8EE0-B137E38EF2EC}"
 	ProjectSection(SolutionItems) = preProject
-		..\docker\.env = ..\docker\.env
-		..\docker\docker-compose.yml = ..\docker\docker-compose.yml
+		docker\.env = docker\.env
+		docker\docker-compose.yml = docker\docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C4C0E48D-35F8-46F2-92DB-62728B59889D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Command.Domain.Tests", "test\Post.Command.Domain.Tests\Post.Command.Domain.Tests.csproj", "{E60A4D0D-B172-4C66-B041-0819E8229494}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipeline", "pipeline", "{B5793575-D94F-4FC1-BDF9-4ACC7ABBBD61}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
 	EndProjectSection
 EndProject
 Global
@@ -65,12 +74,18 @@ Global
 		{E4D63FA4-4175-42A2-BAEC-B9D9BE91077B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4D63FA4-4175-42A2-BAEC-B9D9BE91077B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4D63FA4-4175-42A2-BAEC-B9D9BE91077B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E60A4D0D-B172-4C66-B041-0819E8229494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E60A4D0D-B172-4C66-B041-0819E8229494}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E60A4D0D-B172-4C66-B041-0819E8229494}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E60A4D0D-B172-4C66-B041-0819E8229494}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BF69E139-2BAB-47DE-8EE0-B137E38EF2EC} = {1EDA3B8A-8F5B-4953-93F2-0CFFE06EA291}
+		{E60A4D0D-B172-4C66-B041-0819E8229494} = {C4C0E48D-35F8-46F2-92DB-62728B59889D}
+		{B5793575-D94F-4FC1-BDF9-4ACC7ABBBD61} = {1EDA3B8A-8F5B-4953-93F2-0CFFE06EA291}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {27EFCD86-99F6-40EB-9E2F-8D4D2865885E}
