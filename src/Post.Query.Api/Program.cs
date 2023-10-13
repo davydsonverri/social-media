@@ -35,7 +35,7 @@ builder.Services.AddSingleton<IQueryDispatcher<PostEntity>>(sp =>
     var dispatcher = new QueryDispatcher();
     dispatcher.RegisterHandler<ListAllPostsQuery>(queryHandler.HandleAsync);
     dispatcher.RegisterHandler<FindPostByAuthorQuery>(queryHandler.HandleAsync);
-    dispatcher.RegisterHandler<FindPostByIdQuery>(queryHandler.HandleAsync);    
+    dispatcher.RegisterHandler<FindPostByIdQuery>(queryHandler.HandleAsync);
     return dispatcher;
 });
 
@@ -44,7 +44,10 @@ builder.Services.AddHostedService<ConsumerHostedService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.EnableAnnotations();
+});
 
 var app = builder.Build();
 
