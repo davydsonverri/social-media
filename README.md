@@ -1,3 +1,8 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=davydsonsantana_social-media&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=davydsonsantana_social-media)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=davydsonsantana_social-media&metric=bugs)](https://sonarcloud.io/summary/new_code?id=davydsonsantana_social-media)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=davydsonsantana_social-media&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=davydsonsantana_social-media)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=davydsonsantana_social-media&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=davydsonsantana_social-media)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=davydsonsantana_social-media&metric=coverage)](https://sonarcloud.io/summary/new_code?id=davydsonsantana_social-media)
 
 # Social Media Platform using CQRS and Event Sourcing
 
