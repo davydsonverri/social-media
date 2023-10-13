@@ -2,9 +2,7 @@
 using CQRS.Core.Exceptions;
 using CQRS.Core.Infra;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using Post.Command.Api.Commands;
-using Post.Command.Api.DTOs;
 using Post.Common.DTOs;
 
 namespace Post.Command.Api.Controllers
