@@ -15,7 +15,7 @@ namespace Post.Command.Infra.Dispatchers
         {
             if (_handlers.ContainsKey(typeof(T)))
             {
-                throw new InvalidOperationException($"Handler {typeof(T)} is already registered");
+                throw new InvalidOperationException($"Handler {typeof(T)} is already registered.");
             }
 
             _handlers.Add(typeof(T), x => handler((T)x));
