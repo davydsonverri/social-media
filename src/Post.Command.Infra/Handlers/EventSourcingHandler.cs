@@ -2,23 +2,23 @@
 using CQRS.Core.Handlers;
 using CQRS.Core.Infra;
 using CQRS.Core.Producers;
-using Post.Command.Domain.Aggregates;
 
 namespace Post.Command.Infra.Handlers
 {
-    public class EventSourcingHandler : IEventSourcingHandler<PostAggregate>
+    public class EventSourcingHandler<T> : IEventSourcingHandler<T> where T : AggregateRoot, new()
     {
         private readonly IEventStore _eventStore;
         private readonly IEventProducer _eventProducer;
+
         public EventSourcingHandler(IEventStore eventStore, IEventProducer eventProducer)
         {
             _eventStore = eventStore;
             _eventProducer = eventProducer;
         }
 
-        public async Task<PostAggregate> GetByIdAsync(Guid aggregateId)
+        public async Task<T> GetByIdAsync(Guid aggregateId)
         {
-            var aggregate = new PostAggregate();
+            var aggregate = new T();
             var events = await _eventStore.GetEventsAsync(aggregateId);
 
             if (events == null || events.Count == 0) { return aggregate; }
@@ -46,7 +46,7 @@ namespace Post.Command.Infra.Handlers
 
                 var events = await _eventStore.GetEventsAsync(aggregateId);
 
-                foreach(var @event in events)
+                foreach (var @event in events)
                 {
                     var topic = Environment.GetEnvironmentVariable("KAFKA_TOPIC")!;
                     await _eventProducer.ProduceAsync(topic, @event);

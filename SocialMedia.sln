@@ -36,6 +36,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipeline", "pipeline", "{B5
 		.github\workflows\build.yml = .github\workflows\build.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5AACCDCB-A667-4E09-A20B-E309A6E37C6D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,7 @@ Global
 		{BF69E139-2BAB-47DE-8EE0-B137E38EF2EC} = {1EDA3B8A-8F5B-4953-93F2-0CFFE06EA291}
 		{E60A4D0D-B172-4C66-B041-0819E8229494} = {C4C0E48D-35F8-46F2-92DB-62728B59889D}
 		{B5793575-D94F-4FC1-BDF9-4ACC7ABBBD61} = {1EDA3B8A-8F5B-4953-93F2-0CFFE06EA291}
+		{5AACCDCB-A667-4E09-A20B-E309A6E37C6D} = {C4C0E48D-35F8-46F2-92DB-62728B59889D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {27EFCD86-99F6-40EB-9E2F-8D4D2865885E}
