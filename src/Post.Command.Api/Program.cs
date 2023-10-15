@@ -33,7 +33,7 @@ builder.Services.Configure<ProducerConfig>(builder.Configuration.GetSection(name
 builder.Services.AddScoped<IEventStoreRepository, EventStoreRepository>();
 builder.Services.AddScoped<IEventProducer, EventProducer>();
 builder.Services.AddScoped<IEventStore, EventStore>();
-builder.Services.AddScoped<IEventSourcingHandler<PostAggregate>, EventSourcingHandler>();
+builder.Services.AddScoped<IEventSourcingHandler<PostAggregate>, EventSourcingHandler<PostAggregate>>();
 builder.Services.AddScoped<ICommandHandler, CommandHandler>();
 
 builder.Services.AddSingleton<ICommandDispatcher>(sp =>
