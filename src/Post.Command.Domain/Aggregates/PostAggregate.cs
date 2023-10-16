@@ -1,4 +1,5 @@
 ﻿using CQRS.Core.Domain;
+using CQRS.Core.Identity;
 using Post.Common.Events;
 
 namespace Post.Command.Domain.Aggregates
@@ -95,7 +96,7 @@ namespace Post.Command.Domain.Aggregates
             RaiseEvent(new CommentAdded
             {
                 Id = _id,
-                CommentId = Guid.NewGuid(),
+                CommentId = IdGenerator.NewId(),
                 Comment = comment,
                 Username = username,
                 CommentDate = DateTime.Now

@@ -1,5 +1,6 @@
 ﻿using CQRS.Core.Commands;
 using CQRS.Core.Exceptions;
+using CQRS.Core.Identity;
 using CQRS.Core.Infra;
 using Microsoft.AspNetCore.Mvc;
 using Post.Command.Api.Commands;
@@ -58,7 +59,7 @@ namespace Post.Command.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> PostPosts(CreatePost command)
         {
-            command.Id = Guid.NewGuid();
+            command.Id = IdGenerator.NewId();
             return await DispatchCommand(command);
         }
 
