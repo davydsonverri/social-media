@@ -1,4 +1,5 @@
-﻿using CQRS.Core.Infra;
+﻿using CQRS.Core.Identity;
+using CQRS.Core.Infra;
 using CQRS.Core.Messages;
 using CQRS.Core.Producers;
 using FluentAssertions;
@@ -12,7 +13,7 @@ namespace Post.Command.Infra.UnitTests.Handler
         [Fact]
         public async void EventSourcingHandler_GetByIdAsync_MustReturnLoadedAggregate()
         {
-            var expectedId = Guid.NewGuid();
+            var expectedId = IdGenerator.NewId();
             var eventStoreMock = new Mock<IEventStore>();
             var eventProducerMock = new Mock<IEventProducer>();
             var expectedEvents = new List<BaseEvent>();
