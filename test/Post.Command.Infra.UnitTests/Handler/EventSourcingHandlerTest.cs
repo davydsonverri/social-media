@@ -1,4 +1,5 @@
-﻿using CQRS.Core.Infra;
+﻿using CQRS.Core.Identity;
+using CQRS.Core.Infra;
 using CQRS.Core.Messages;
 using CQRS.Core.Producers;
 using Domain.Identity;
