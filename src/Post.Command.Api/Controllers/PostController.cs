@@ -1,6 +1,5 @@
 ﻿using CQRS.Core.Commands;
 using CQRS.Core.Exceptions;
-using CQRS.Core.Identity;
 using CQRS.Core.Infra;
 using Domain.Identity;
 using Microsoft.AspNetCore.Mvc;
