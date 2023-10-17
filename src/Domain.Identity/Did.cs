@@ -1,4 +1,5 @@
-﻿using System.Buffers;
+﻿using Domain.Identity.ULID;
+using System.Buffers;
 using System.Buffers.Binary;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -9,20 +10,19 @@ using System.Runtime.Intrinsics.X86;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json.Serialization;
-using Cysharp.Serialization.Json;
-using Domain.Identity.ULID;
 
 namespace System
 {
     //
-    // Summary:
+    //     Summary:
     //     Represents a Universally Unique Lexicographically Sortable Identifier (ULID).
     //     Spec: https://github.com/ulid/spec
+    //
     [StructLayout(LayoutKind.Explicit, Size = 16)]
     [DebuggerDisplay("{ToString(),nq}")]
     [TypeConverter(typeof(DidTypeConverter))]
     [JsonConverter(typeof(DidJsonConverter))]
-    public readonly struct Did : IEquatable<Did>, IComparable<Did>, IComparable, ISpanFormattable, IFormattable, ISpanParsable<Did>, IParsable<Did>
+    public readonly struct Did : IEquatable<Did>, IComparable<Did>, IComparable, ISpanFormattable, ISpanParsable<Did>, IParsable<Did>
     {
         private static readonly char[] Base32Text = "0123456789ABCDEFGHJKMNPQRSTVWXYZ".ToCharArray();
 
@@ -541,7 +541,7 @@ namespace System
             ref int reference = ref Unsafe.As<Did, int>(ref Unsafe.AsRef(in this));
             return reference ^ Unsafe.Add(ref reference, 1) ^ Unsafe.Add(ref reference, 2) ^ Unsafe.Add(ref reference, 3);
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool EqualsCore(in Did left, in Did right)
         {
@@ -596,11 +596,10 @@ namespace System
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static int GetResult(byte me, byte them)
         {
-            if (me >= them)
+            if (me > them)
             {
                 return 1;
             }
-
             return -1;
         }
 
@@ -708,6 +707,26 @@ namespace System
         public static explicit operator Guid(Did _this)
         {
             return _this.ToGuid();
+        }
+
+        public static bool operator <(Did left, Did right)
+        {
+            return left.CompareTo(right) == -1;
+        }
+
+        public static bool operator >(Did left, Did right)
+        {
+            return left.CompareTo(right) == 1;
+        }
+
+        public static bool operator >=(Did left, Did right)
+        {
+            return left.CompareTo(right) >= 0;
+        }
+
+        public static bool operator <=(Did left, Did right)
+        {
+            return left.CompareTo(right) <= 0;
         }
 
         //
