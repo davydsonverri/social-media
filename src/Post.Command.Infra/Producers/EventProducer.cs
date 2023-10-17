@@ -1,8 +1,8 @@
 ﻿using Confluent.Kafka;
 using CQRS.Core.Exceptions;
-using CQRS.Core.Identity;
 using CQRS.Core.Messages;
 using CQRS.Core.Producers;
+using Domain.Identity;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 
@@ -11,10 +11,12 @@ namespace Post.Command.Infra.Producers
     public class EventProducer : IEventProducer
     {
         private readonly ProducerConfig _config;
+        private readonly IDomainIdentity _domainIdentity;
 
-        public EventProducer(IOptions<ProducerConfig> config)
+        public EventProducer(IOptions<ProducerConfig> config, IDomainIdentity domainIdentity)
         {
             _config = config.Value;
+            _domainIdentity = domainIdentity;
         }
         public async Task ProduceAsync<T>(string topic, T @event) where T : BaseEvent
         {
@@ -25,7 +27,7 @@ namespace Post.Command.Infra.Producers
 
             var eventMessage = new Message<string, string>
             {
-                Key = IdGenerator.NewId().ToString(),
+                Key = _domainIdentity.NewId().ToString(),
                 Value = JsonSerializer.Serialize(@event, @event.GetType())
             };
 
