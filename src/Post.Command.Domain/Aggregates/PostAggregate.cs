@@ -6,15 +6,14 @@ namespace Post.Command.Domain.Aggregates
     public class PostAggregate : AggregateRoot
     {
                 
-        public string Author { get; private set; }
-        public string Message { get; private set; }
+        public string Author { get; private set; } = string.Empty;
+        public string Message { get; private set; } = string.Empty;
         public bool Active { get; private set; }
         public int Likes { get; private set; }
         public Dictionary<Did, Tuple<string, string>> Comments { get; private set; } = new();
         
         public PostAggregate()
-        {
-            
+        {            
         }
 
         public PostAggregate(Did id, string author, string message)
