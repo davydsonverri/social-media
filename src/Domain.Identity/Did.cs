@@ -524,20 +524,20 @@ namespace System
             return 0;
         }
 
-        public int CompareTo(object value)
+        public int CompareTo(object obj)
         {
-            if (value == null)
+            if (obj == null)
             {
                 return 1;
             }
 
-            if (value is Did)
+            if (obj is Did)
             {
-                Did other = (Did)value;
+                Did other = (Did)obj;
                 return CompareTo(other);
             }
 
-            throw new ArgumentException("Object must be of type ULID.", "value");
+            throw new ArgumentException("Object must be of type DID.", "value");
         }
 
         public static explicit operator Guid(Did _this)
