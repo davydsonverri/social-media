@@ -257,101 +257,6 @@ namespace System
             return new Did(timestamp.ToUnixTimeMilliseconds(), randomness);
         }
 
-        public static Did Parse(string base32)
-        {
-            return Parse(base32.AsSpan());
-        }
-
-        public static Did Parse(ReadOnlySpan<char> base32)
-        {
-            if (base32.Length != 26)
-            {
-                throw new ArgumentException("invalid base32 length, length:" + base32.Length);
-            }
-
-            return new Did(base32);
-        }
-
-        public static Did Parse(ReadOnlySpan<byte> base32)
-        {
-            if (!TryParse(base32, out var did))
-            {
-                throw new ArgumentException("invalid base32 length, length:" + base32.Length);
-            }
-
-            return did;
-        }
-
-        public static bool TryParse(string base32, out Did did)
-        {
-            return TryParse(base32.AsSpan(), out did);
-        }
-
-        public static bool TryParse(ReadOnlySpan<char> base32, out Did did)
-        {
-            if (base32.Length != 26)
-            {
-                did = default(Did);
-                return false;
-            }
-
-            try
-            {
-                did = new Did(base32);
-                return true;
-            } catch
-            {
-                did = default(Did);
-                return false;
-            }
-        }
-
-        public static bool TryParse(ReadOnlySpan<byte> base32, out Did did)
-        {
-            if (base32.Length != 26)
-            {
-                did = default(Did);
-                return false;
-            }
-
-            try
-            {
-                did = ParseCore(base32);
-                return true;
-            } catch
-            {
-                did = default(Did);
-                return false;
-            }
-        }
-
-        private static Did ParseCore(ReadOnlySpan<byte> base32)
-        {
-            if (base32.Length != 26)
-            {
-                throw new ArgumentException("invalid base32 length, length:" + base32.Length);
-            }
-
-            Did source = default(Did);
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 15) = (byte)((CharToBase32[base32[24]] << 5) | CharToBase32[base32[25]]);
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 0) = (byte)((CharToBase32[base32[0]] << 5) | CharToBase32[base32[1]]);
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 1) = (byte)((CharToBase32[base32[2]] << 3) | (CharToBase32[base32[3]] >> 2));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 2) = (byte)((CharToBase32[base32[3]] << 6) | (CharToBase32[base32[4]] << 1) | (CharToBase32[base32[5]] >> 4));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 3) = (byte)((CharToBase32[base32[5]] << 4) | (CharToBase32[base32[6]] >> 1));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 4) = (byte)((CharToBase32[base32[6]] << 7) | (CharToBase32[base32[7]] << 2) | (CharToBase32[base32[8]] >> 3));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 5) = (byte)((CharToBase32[base32[8]] << 5) | CharToBase32[base32[9]]);
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 6) = (byte)((CharToBase32[base32[10]] << 3) | (CharToBase32[base32[11]] >> 2));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 7) = (byte)((CharToBase32[base32[11]] << 6) | (CharToBase32[base32[12]] << 1) | (CharToBase32[base32[13]] >> 4));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 8) = (byte)((CharToBase32[base32[13]] << 4) | (CharToBase32[base32[14]] >> 1));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 9) = (byte)((CharToBase32[base32[14]] << 7) | (CharToBase32[base32[15]] << 2) | (CharToBase32[base32[16]] >> 3));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 10) = (byte)((CharToBase32[base32[16]] << 5) | CharToBase32[base32[17]]);
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 11) = (byte)((CharToBase32[base32[18]] << 3) | (CharToBase32[base32[19]] >> 2));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 12) = (byte)((CharToBase32[base32[19]] << 6) | (CharToBase32[base32[20]] << 1) | (CharToBase32[base32[21]] >> 4));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 13) = (byte)((CharToBase32[base32[21]] << 4) | (CharToBase32[base32[22]] >> 1));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 14) = (byte)((CharToBase32[base32[22]] << 7) | (CharToBase32[base32[23]] << 2) | (CharToBase32[base32[24]] >> 3));
-            return source;
-        }
-
         public byte[] ToByteArray()
         {
             byte[] array = new byte[16];
@@ -455,75 +360,6 @@ namespace System
             return true;
         }
 
-        public override string ToString()
-        {
-            return string.Create(26, this, delegate (Span<char> span, Did state)
-            {
-                state.TryWriteStringify(span);
-            });
-        }
-
-        public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider)
-        {
-            if (TryWriteStringify(destination))
-            {
-                charsWritten = 26;
-                return true;
-            }
-
-            charsWritten = 0;
-            return false;
-        }
-
-        public string ToString(string format, IFormatProvider formatProvider)
-        {
-            return ToString();
-        }
-
-        public static Did Parse(string s, IFormatProvider provider)
-        {
-            return Parse(s);
-        }
-
-        static Did IParsable<Did>.Parse(string s, IFormatProvider provider)
-        {
-            //ILSpy generated this explicit interface implementation from .override directive in Parse
-            return Parse(s, provider!);
-        }
-
-        public static bool TryParse(string s, IFormatProvider? provider, out Did result)
-        {
-            return TryParse(s, out result);
-        }
-
-        static bool IParsable<Did>.TryParse(string s, IFormatProvider provider, out Did result)
-        {
-            //ILSpy generated this explicit interface implementation from .override directive in TryParse
-            return TryParse(s, provider, out result);
-        }
-
-        public static Did Parse(ReadOnlySpan<char> s, IFormatProvider provider)
-        {
-            return Parse(s);
-        }
-
-        static Did ISpanParsable<Did>.Parse(ReadOnlySpan<char> s, IFormatProvider provider)
-        {
-            //ILSpy generated this explicit interface implementation from .override directive in Parse
-            return Parse(s, provider);
-        }
-
-        public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out Did result)
-        {
-            return TryParse(s, out result);
-        }
-
-        static bool ISpanParsable<Did>.TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out Did result)
-        {
-            //ILSpy generated this explicit interface implementation from .override directive in TryParse
-            return TryParse(s, provider, out result);
-        }
-
         public bool TryFormat(Span<byte> destination, out int bytesWritten, ReadOnlySpan<char> format, IFormatProvider provider)
         {
             if (TryWriteStringify(destination))
@@ -541,7 +377,7 @@ namespace System
             ref int reference = ref Unsafe.As<Did, int>(ref Unsafe.AsRef(in this));
             return reference ^ Unsafe.Add(ref reference, 1) ^ Unsafe.Add(ref reference, 2) ^ Unsafe.Add(ref reference, 3);
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool EqualsCore(in Did left, in Did right)
         {
@@ -779,5 +615,171 @@ namespace System
 
             throw new NotImplementedException();
         }
+
+        #region Parse
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            return ToString();
+        }
+
+        public static Did Parse(string base32)
+        {
+            return Parse(base32.AsSpan());
+        }
+
+        public static Did Parse(ReadOnlySpan<char> base32)
+        {
+            if (base32.Length != 26)
+            {
+                throw new ArgumentException("invalid base32 length, length:" + base32.Length);
+            }
+
+            return new Did(base32);
+        }
+
+        public static Did Parse(ReadOnlySpan<byte> base32)
+        {
+            if (!TryParse(base32, out var did))
+            {
+                throw new ArgumentException("invalid base32 length, length:" + base32.Length);
+            }
+
+            return did;
+        }
+
+        public static Did Parse(string s, IFormatProvider provider)
+        {
+            return Parse(s);
+        }
+
+        static Did IParsable<Did>.Parse(string s, IFormatProvider provider)
+        {
+            //ILSpy generated this explicit interface implementation from .override directive in Parse
+            return Parse(s, provider!);
+        }
+
+        public override string ToString()
+        {
+            return string.Create(26, this, delegate (Span<char> span, Did state)
+            {
+                state.TryWriteStringify(span);
+            });
+        }
+
+        public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider)
+        {
+            if (TryWriteStringify(destination))
+            {
+                charsWritten = 26;
+                return true;
+            }
+
+            charsWritten = 0;
+            return false;
+        }
+
+        public static bool TryParse(string s, IFormatProvider? provider, out Did result)
+        {
+            return TryParse(s, out result);
+        }
+
+        static bool IParsable<Did>.TryParse(string s, IFormatProvider provider, out Did result)
+        {
+            //ILSpy generated this explicit interface implementation from .override directive in TryParse
+            return TryParse(s, provider, out result);
+        }
+
+        public static Did Parse(ReadOnlySpan<char> s, IFormatProvider provider)
+        {
+            return Parse(s);
+        }
+
+        static Did ISpanParsable<Did>.Parse(ReadOnlySpan<char> s, IFormatProvider provider)
+        {
+            //ILSpy generated this explicit interface implementation from .override directive in Parse
+            return Parse(s, provider);
+        }
+
+        public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out Did result)
+        {
+            return TryParse(s, out result);
+        }
+
+        static bool ISpanParsable<Did>.TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out Did result)
+        {
+            //ILSpy generated this explicit interface implementation from .override directive in TryParse
+            return TryParse(s, provider, out result);
+        }
+
+        public static bool TryParse(string base32, out Did did)
+        {
+            return TryParse(base32.AsSpan(), out did);
+        }
+
+        public static bool TryParse(ReadOnlySpan<char> base32, out Did did)
+        {
+            if (base32.Length != 26)
+            {
+                did = default(Did);
+                return false;
+            }
+
+            try
+            {
+                did = new Did(base32);
+                return true;
+            } catch
+            {
+                did = default(Did);
+                return false;
+            }
+        }
+
+        public static bool TryParse(ReadOnlySpan<byte> base32, out Did did)
+        {
+            if (base32.Length != 26)
+            {
+                did = default(Did);
+                return false;
+            }
+
+            try
+            {
+                did = ParseCore(base32);
+                return true;
+            } catch
+            {
+                did = default(Did);
+                return false;
+            }
+        }
+
+        private static Did ParseCore(ReadOnlySpan<byte> base32)
+        {
+            if (base32.Length != 26)
+            {
+                throw new ArgumentException("invalid base32 length, length:" + base32.Length);
+            }
+
+            Did source = default(Did);
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 15) = (byte)((CharToBase32[base32[24]] << 5) | CharToBase32[base32[25]]);
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 0) = (byte)((CharToBase32[base32[0]] << 5) | CharToBase32[base32[1]]);
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 1) = (byte)((CharToBase32[base32[2]] << 3) | (CharToBase32[base32[3]] >> 2));
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 2) = (byte)((CharToBase32[base32[3]] << 6) | (CharToBase32[base32[4]] << 1) | (CharToBase32[base32[5]] >> 4));
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 3) = (byte)((CharToBase32[base32[5]] << 4) | (CharToBase32[base32[6]] >> 1));
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 4) = (byte)((CharToBase32[base32[6]] << 7) | (CharToBase32[base32[7]] << 2) | (CharToBase32[base32[8]] >> 3));
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 5) = (byte)((CharToBase32[base32[8]] << 5) | CharToBase32[base32[9]]);
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 6) = (byte)((CharToBase32[base32[10]] << 3) | (CharToBase32[base32[11]] >> 2));
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 7) = (byte)((CharToBase32[base32[11]] << 6) | (CharToBase32[base32[12]] << 1) | (CharToBase32[base32[13]] >> 4));
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 8) = (byte)((CharToBase32[base32[13]] << 4) | (CharToBase32[base32[14]] >> 1));
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 9) = (byte)((CharToBase32[base32[14]] << 7) | (CharToBase32[base32[15]] << 2) | (CharToBase32[base32[16]] >> 3));
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 10) = (byte)((CharToBase32[base32[16]] << 5) | CharToBase32[base32[17]]);
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 11) = (byte)((CharToBase32[base32[18]] << 3) | (CharToBase32[base32[19]] >> 2));
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 12) = (byte)((CharToBase32[base32[19]] << 6) | (CharToBase32[base32[20]] << 1) | (CharToBase32[base32[21]] >> 4));
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 13) = (byte)((CharToBase32[base32[21]] << 4) | (CharToBase32[base32[22]] >> 1));
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 14) = (byte)((CharToBase32[base32[22]] << 7) | (CharToBase32[base32[23]] << 2) | (CharToBase32[base32[24]] >> 3));
+            return source;
+        }
+        #endregion
     }
 }
