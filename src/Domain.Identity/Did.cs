@@ -372,6 +372,18 @@ namespace System
             return false;
         }
 
+        public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+        {
+            if (TryWriteStringify(destination))
+            {
+                charsWritten = 26;
+                return true;
+            }
+
+            charsWritten = 0;
+            return false;
+        }
+
         public override int GetHashCode()
         {
             ref int reference = ref Unsafe.As<Did, int>(ref Unsafe.AsRef(in this));
@@ -660,22 +672,15 @@ namespace System
             return Parse(s);
         }
 
+        public static Did Parse(ReadOnlySpan<char> s, IFormatProvider provider)
+        {
+            return Parse(s);
+        }
+
         static Did IParsable<Did>.Parse(string s, IFormatProvider? provider)
         {
             //ILSpy generated this explicit interface implementation from .override directive in Parse
             return Parse(s, provider!);
-        }
-
-        public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
-        {
-            if (TryWriteStringify(destination))
-            {
-                charsWritten = 26;
-                return true;
-            }
-
-            charsWritten = 0;
-            return false;
         }
 
         public static bool TryParse(string s, IFormatProvider? provider, out Did result)
@@ -687,11 +692,6 @@ namespace System
         {
             //ILSpy generated this explicit interface implementation from .override directive in TryParse
             return TryParse(s!, provider, out result);
-        }
-
-        public static Did Parse(ReadOnlySpan<char> s, IFormatProvider provider)
-        {
-            return Parse(s);
         }
 
         static Did ISpanParsable<Did>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
