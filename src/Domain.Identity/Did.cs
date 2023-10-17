@@ -408,7 +408,7 @@ namespace System
             return EqualsCore(in this, in other);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is Did)
             {
