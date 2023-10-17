@@ -45,7 +45,7 @@ namespace System
             29, 30, 31
         };
 
-        private static readonly DateTimeOffset UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTimeOffset UnixEpoch = DateTime.UnixEpoch;
 
         public static readonly Did MinValue = new Did(UnixEpoch.ToUnixTimeMilliseconds(), new byte[10] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
