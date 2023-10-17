@@ -537,7 +537,7 @@ namespace System
                 return CompareTo(other);
             }
 
-            throw new ArgumentException("Object must be of type DID.", "value");
+            throw new ArgumentException("Object must be of type Did.", nameof(obj));
         }
 
         public static explicit operator Guid(Did _this)
