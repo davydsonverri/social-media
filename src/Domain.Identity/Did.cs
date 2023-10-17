@@ -617,6 +617,14 @@ namespace System
         }
 
         #region Parse
+        public override string ToString()
+        {
+            return string.Create(26, this, delegate (Span<char> span, Did state)
+            {
+                state.TryWriteStringify(span);
+            });
+        }
+
         public string ToString(string format, IFormatProvider formatProvider)
         {
             return ToString();
@@ -656,14 +664,6 @@ namespace System
         {
             //ILSpy generated this explicit interface implementation from .override directive in Parse
             return Parse(s, provider!);
-        }
-
-        public override string ToString()
-        {
-            return string.Create(26, this, delegate (Span<char> span, Did state)
-            {
-                state.TryWriteStringify(span);
-            });
         }
 
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider)
