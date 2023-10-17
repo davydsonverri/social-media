@@ -121,7 +121,7 @@ namespace System
             }
         }
 
-        private static bool IsVector128Supported => Vector128.IsHardwareAccelerated;
+        private static bool IsVector128Supported => Vector128.IsHardwareAccelerated;       
 
         internal Did(long timestampMilliseconds, XorShift64 random)
         {
@@ -762,23 +762,29 @@ namespace System
             }
 
             Did source = default(Did);
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 15) = (byte)((CharToBase32[base32[24]] << 5) | CharToBase32[base32[25]]);
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 0) = (byte)((CharToBase32[base32[0]] << 5) | CharToBase32[base32[1]]);
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 1) = (byte)((CharToBase32[base32[2]] << 3) | (CharToBase32[base32[3]] >> 2));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 2) = (byte)((CharToBase32[base32[3]] << 6) | (CharToBase32[base32[4]] << 1) | (CharToBase32[base32[5]] >> 4));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 3) = (byte)((CharToBase32[base32[5]] << 4) | (CharToBase32[base32[6]] >> 1));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 4) = (byte)((CharToBase32[base32[6]] << 7) | (CharToBase32[base32[7]] << 2) | (CharToBase32[base32[8]] >> 3));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 5) = (byte)((CharToBase32[base32[8]] << 5) | CharToBase32[base32[9]]);
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 6) = (byte)((CharToBase32[base32[10]] << 3) | (CharToBase32[base32[11]] >> 2));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 7) = (byte)((CharToBase32[base32[11]] << 6) | (CharToBase32[base32[12]] << 1) | (CharToBase32[base32[13]] >> 4));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 8) = (byte)((CharToBase32[base32[13]] << 4) | (CharToBase32[base32[14]] >> 1));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 9) = (byte)((CharToBase32[base32[14]] << 7) | (CharToBase32[base32[15]] << 2) | (CharToBase32[base32[16]] >> 3));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 10) = (byte)((CharToBase32[base32[16]] << 5) | CharToBase32[base32[17]]);
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 11) = (byte)((CharToBase32[base32[18]] << 3) | (CharToBase32[base32[19]] >> 2));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 12) = (byte)((CharToBase32[base32[19]] << 6) | (CharToBase32[base32[20]] << 1) | (CharToBase32[base32[21]] >> 4));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 13) = (byte)((CharToBase32[base32[21]] << 4) | (CharToBase32[base32[22]] >> 1));
-            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), 14) = (byte)((CharToBase32[base32[22]] << 7) | (CharToBase32[base32[23]] << 2) | (CharToBase32[base32[24]] >> 3));
+            AddBytes(ref source, 15, (byte)((CharToBase32[base32[24]] << 5) | CharToBase32[base32[25]]));
+            AddBytes(ref source, 0, (byte)((CharToBase32[base32[0]] << 5) | CharToBase32[base32[1]]));
+            AddBytes(ref source, 1, (byte)((CharToBase32[base32[2]] << 3) | (CharToBase32[base32[3]] >> 2)));
+            AddBytes(ref source, 2, (byte)((CharToBase32[base32[3]] << 6) | (CharToBase32[base32[4]] << 1) | (CharToBase32[base32[5]] >> 4)));
+            AddBytes(ref source, 3, (byte)((CharToBase32[base32[5]] << 4) | (CharToBase32[base32[6]] >> 1)));
+            AddBytes(ref source, 4, (byte)((CharToBase32[base32[6]] << 7) | (CharToBase32[base32[7]] << 2) | (CharToBase32[base32[8]] >> 3)));
+            AddBytes(ref source, 5, (byte)((CharToBase32[base32[8]] << 5) | CharToBase32[base32[9]]));
+            AddBytes(ref source, 6, (byte)((CharToBase32[base32[10]] << 3) | (CharToBase32[base32[11]] >> 2)));
+            AddBytes(ref source, 7, (byte)((CharToBase32[base32[11]] << 6) | (CharToBase32[base32[12]] << 1) | (CharToBase32[base32[13]] >> 4)));
+            AddBytes(ref source, 8, (byte)((CharToBase32[base32[13]] << 4) | (CharToBase32[base32[14]] >> 1)));
+            AddBytes(ref source, 9, (byte)((CharToBase32[base32[14]] << 7) | (CharToBase32[base32[15]] << 2) | (CharToBase32[base32[16]] >> 3)));
+            AddBytes(ref source, 10, (byte)((CharToBase32[base32[16]] << 5) | CharToBase32[base32[17]]));
+            AddBytes(ref source, 11, (byte)((CharToBase32[base32[18]] << 3) | (CharToBase32[base32[19]] >> 2)));
+            AddBytes(ref source, 12, (byte)((CharToBase32[base32[19]] << 6) | (CharToBase32[base32[20]] << 1) | (CharToBase32[base32[21]] >> 4)));
+            AddBytes(ref source, 13, (byte)((CharToBase32[base32[21]] << 4) | (CharToBase32[base32[22]] >> 1)));
+            AddBytes(ref source, 14, (byte)((CharToBase32[base32[22]] << 7) | (CharToBase32[base32[23]] << 2) | (CharToBase32[base32[24]] >> 3)));
+            
             return source;
+        }
+
+        private static void AddBytes(ref Did source, int offset, byte value)
+        {
+            Unsafe.Add(ref Unsafe.As<Did, byte>(ref source), offset) = value;
         }
         #endregion
     }
