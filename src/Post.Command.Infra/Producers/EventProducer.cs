@@ -1,6 +1,5 @@
 ﻿using Confluent.Kafka;
 using CQRS.Core.Exceptions;
-using CQRS.Core.Identity;
 using CQRS.Core.Messages;
 using CQRS.Core.Producers;
 using Microsoft.Extensions.Options;
@@ -25,7 +24,7 @@ namespace Post.Command.Infra.Producers
 
             var eventMessage = new Message<string, string>
             {
-                Key = IdGenerator.NewId().ToString(),
+                Key = Guid.NewGuid().ToString(),
                 Value = JsonSerializer.Serialize(@event, @event.GetType())
             };
 

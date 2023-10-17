@@ -2,6 +2,7 @@ using Confluent.Kafka;
 using CQRS.Core.Consumers;
 using CQRS.Core.Infra;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Post.Query.Api.Queries;
 using Post.Query.Domain.Entities;
 using Post.Query.Domain.Repositories;
@@ -47,6 +48,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.EnableAnnotations();
+    c.MapType<Did>(() => new OpenApiSchema()
+    {
+        Type = "string"
+    });
 });
 
 var app = builder.Build();

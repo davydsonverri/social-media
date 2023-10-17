@@ -1,7 +1,8 @@
-﻿using CQRS.Core.Identity;
-using CQRS.Core.Infra;
+﻿using CQRS.Core.Infra;
 using CQRS.Core.Messages;
 using CQRS.Core.Producers;
+using Domain.Identity;
+using Domain.Identity.ULID;
 using FluentAssertions;
 using Moq;
 using Post.Command.Infra.Handlers;
@@ -10,10 +11,12 @@ namespace Post.Command.Infra.UnitTests.Handler
 {
     public class EventSourcingHandlerTest
     {
+        private readonly IDomainIdentity _domainIdentity = new UlidGenerator();
+
         [Fact]
         public async void EventSourcingHandler_GetByIdAsync_MustReturnLoadedAggregate()
         {
-            var expectedId = IdGenerator.NewId();
+            var expectedId = _domainIdentity.NewId();
             var eventStoreMock = new Mock<IEventStore>();
             var eventProducerMock = new Mock<IEventProducer>();
             var expectedEvents = new List<BaseEvent>();

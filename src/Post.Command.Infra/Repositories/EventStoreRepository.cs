@@ -23,7 +23,7 @@ namespace Post.Command.Infra.Repositories
             await _eventStoreCollection.InsertOneAsync(@event);
         }
 
-        public async Task<List<EventModel>> FindByAggregateId(Guid aggregateId)
+        public async Task<List<EventModel>> FindByAggregateId(Did aggregateId)
         {
             return await _eventStoreCollection.Find(x => x.AggregateId == aggregateId).ToListAsync();
         }

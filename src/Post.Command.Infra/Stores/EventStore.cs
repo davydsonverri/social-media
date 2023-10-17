@@ -19,7 +19,7 @@ namespace Post.Command.Infra.Stores
             _eventProducer = eventProducer;
         }
 
-        public async Task<List<BaseEvent>> GetEventsAsync(Guid aggregateId)
+        public async Task<List<BaseEvent>> GetEventsAsync(Did aggregateId)
         {
             var eventStream = await _eventStoreRepository.FindByAggregateId(aggregateId);
 
@@ -31,7 +31,7 @@ namespace Post.Command.Infra.Stores
             return eventStream.OrderBy(x => x.Version).Select(x => x.EventData).ToList();
         }
 
-        public async Task SaveEventAsync(Guid aggregateId, IEnumerable<BaseEvent> events, int expectedVersion)
+        public async Task SaveEventAsync(Did aggregateId, IEnumerable<BaseEvent> events, int expectedVersion)
         {
             var eventStream = await _eventStoreRepository.FindByAggregateId(aggregateId);
 
@@ -64,7 +64,7 @@ namespace Post.Command.Infra.Stores
             }
         }
 
-        public async Task<List<Guid>> GetAggregateIdsAsync()
+        public async Task<List<Did>> GetAggregateIdsAsync()
         {
             var eventStream = await _eventStoreRepository.FindAllAsync();
 

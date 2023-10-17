@@ -1,4 +1,5 @@
 using Bogus;
+using Domain.Identity.ULID;
 using FluentAssertions;
 using Post.Command.Domain.Aggregates;
 using Post.Command.Domain.Tests.Fixture;
@@ -9,6 +10,7 @@ namespace Post.Command.Domain.Tests.Aggregates
     public class PostAggregateTest
     {
         private readonly Faker _faker;
+        private readonly UlidGenerator _ulidGenerator = new();
         private readonly PostAggregateFixture _postAggregateFixture;
 
         public PostAggregateTest(PostAggregateFixture postAggregateFixture)
@@ -23,7 +25,7 @@ namespace Post.Command.Domain.Tests.Aggregates
         {
             var expectedPost = new
             {
-                Id = _faker.Random.Guid(),
+                Id = _ulidGenerator.NewId(),
                 Author = _faker.Person.FullName,
                 Message = string.Join(" ", _faker.Lorem.Words(_faker.Random.Int(3, 50))),
                 Active = true
@@ -83,12 +85,13 @@ namespace Post.Command.Domain.Tests.Aggregates
         [Fact(DisplayName = "Must be able to add comment to 'Post'")]
         [Trait("Aggregate", "Post")]
         public void Post_Comment_MustAddNewComment()
-        {
+        {            
             var expectedUserName = _faker.Internet.UserName();
+            var expectedCommentId = _ulidGenerator.NewId();
             var expectedComment = new Tuple<string, string>(expectedUserName, string.Join(" ", _faker.Lorem.Words(_faker.Random.Int(3, 50))));
             var sut = _postAggregateFixture.BuildValidPost();
 
-            sut.AddComment(expectedComment.Item1, expectedComment.Item2);
+            sut.AddComment(expectedCommentId, expectedComment.Item1, expectedComment.Item2);
 
             sut.Comments.First().Value.Should().Be(expectedComment);
         }
@@ -98,10 +101,11 @@ namespace Post.Command.Domain.Tests.Aggregates
         public void AddComment_WhenPostIsDeleted_MustThrowInvalidOperationException()
         {
             var expectedUserName = _faker.Internet.UserName();
+            var expectedCommentId = _ulidGenerator.NewId();
             var expectedComment = string.Join(" ", _faker.Lorem.Words(_faker.Random.Int(3, 50)));
             var sut = _postAggregateFixture.BuildDeletedPost();
 
-            sut.Invoking(x => x.AddComment(expectedUserName, expectedUserName))
+            sut.Invoking(x => x.AddComment(expectedCommentId, expectedUserName, expectedUserName))
                .Should().Throw<InvalidOperationException>()
                .WithMessage("Unable to comment to an inactive post.");
         }
@@ -111,9 +115,10 @@ namespace Post.Command.Domain.Tests.Aggregates
         public void AddComment_WithEmptyMessage_MustThrowInvalidOperationException()
         {
             var expectedUserName = _faker.Internet.UserName();
+            var expectedCommentId = _ulidGenerator.NewId();
             var sut = _postAggregateFixture.BuildValidPost();
 
-            sut.Invoking(x => x.AddComment(string.Empty, expectedUserName))
+            sut.Invoking(x => x.AddComment(expectedCommentId, string.Empty, expectedUserName))
                .Should().Throw<InvalidOperationException>()
                .WithMessage("The value of comment cannot be empty.");
         }

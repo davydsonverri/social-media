@@ -4,6 +4,6 @@ namespace Post.Query.Api.Queries
 {
     public record FindPostByIdQuery : BaseQuery
     {
-        public required Guid Id { get; set; }
+        public required Did Id { get; set; }
     }
 }

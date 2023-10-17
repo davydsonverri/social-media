@@ -5,6 +5,6 @@ namespace CQRS.Core.Messages
     public record class Message
     {
         [SwaggerSchema(ReadOnly = true)]
-        public Guid Id { get; set; }
+        public Did Id { get; set; }
     }
 }
