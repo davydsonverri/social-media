@@ -22,7 +22,7 @@ namespace System
     [DebuggerDisplay("{ToString(),nq}")]
     [TypeConverter(typeof(DidTypeConverter))]
     [JsonConverter(typeof(DidJsonConverter))]
-    public readonly struct Did : IEquatable<Did>, IComparable<Did>, IComparable, ISpanFormattable, ISpanParsable<Did>, IParsable<Did>
+    public readonly struct Did : IEquatable<Did>, IComparable<Did>, IComparable, ISpanFormattable, ISpanParsable<Did>
     {
         private static readonly char[] Base32Text = "0123456789ABCDEFGHJKMNPQRSTVWXYZ".ToCharArray();
 
