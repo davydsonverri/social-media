@@ -625,7 +625,7 @@ namespace System
             });
         }
 
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string? format, IFormatProvider? formatProvider)
         {
             return ToString();
         }
@@ -660,13 +660,13 @@ namespace System
             return Parse(s);
         }
 
-        static Did IParsable<Did>.Parse(string s, IFormatProvider provider)
+        static Did IParsable<Did>.Parse(string s, IFormatProvider? provider)
         {
             //ILSpy generated this explicit interface implementation from .override directive in Parse
             return Parse(s, provider!);
         }
 
-        public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider)
+        public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
         {
             if (TryWriteStringify(destination))
             {
@@ -683,10 +683,10 @@ namespace System
             return TryParse(s, out result);
         }
 
-        static bool IParsable<Did>.TryParse(string s, IFormatProvider provider, out Did result)
+        static bool IParsable<Did>.TryParse(string? s, IFormatProvider? provider, out Did result)
         {
             //ILSpy generated this explicit interface implementation from .override directive in TryParse
-            return TryParse(s, provider, out result);
+            return TryParse(s!, provider, out result);
         }
 
         public static Did Parse(ReadOnlySpan<char> s, IFormatProvider provider)
@@ -694,10 +694,10 @@ namespace System
             return Parse(s);
         }
 
-        static Did ISpanParsable<Did>.Parse(ReadOnlySpan<char> s, IFormatProvider provider)
+        static Did ISpanParsable<Did>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
         {
             //ILSpy generated this explicit interface implementation from .override directive in Parse
-            return Parse(s, provider);
+            return Parse(s, provider!);
         }
 
         public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out Did result)
@@ -705,10 +705,10 @@ namespace System
             return TryParse(s, out result);
         }
 
-        static bool ISpanParsable<Did>.TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out Did result)
+        static bool ISpanParsable<Did>.TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Did result)
         {
             //ILSpy generated this explicit interface implementation from .override directive in TryParse
-            return TryParse(s, provider, out result);
+            return TryParse(s, provider!, out result);
         }
 
         public static bool TryParse(string base32, out Did did)
