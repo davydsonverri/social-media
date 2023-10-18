@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Domain.Identity.ULID;
 using Post.Command.Domain.Aggregates;
 
 namespace Post.Command.Domain.Tests.Fixture
@@ -9,6 +10,7 @@ namespace Post.Command.Domain.Tests.Fixture
     public class PostAggregateFixture : IDisposable
     {
         private readonly Faker _faker;
+        private readonly UlidGenerator _ulidGenerator = new();
 
         public PostAggregateFixture()
         {
@@ -17,7 +19,7 @@ namespace Post.Command.Domain.Tests.Fixture
 
         public PostAggregate BuildValidPost()
         {
-            var postId = _faker.Random.Guid();
+            var postId = _ulidGenerator.NewId();
             string postAuthor = _faker.Person.FullName;
             string postMessage = string.Join(" ", _faker.Lorem.Words(_faker.Random.Int(3, 50)));
             var aggregate = new PostAggregate(postId, postAuthor, postMessage);
@@ -26,14 +28,15 @@ namespace Post.Command.Domain.Tests.Fixture
 
         public PostAggregate BuildValidPostWithComment()
         {
-            var postId = _faker.Random.Guid();
+            var postId = _ulidGenerator.NewId();
             string postAuthor = _faker.Person.FullName;
             string postMessage = string.Join(" ", _faker.Lorem.Words(_faker.Random.Int(3, 50)));
             var aggregate = new PostAggregate(postId, postAuthor, postMessage);
             
             var postComment = string.Join(" ", _faker.Lorem.Words(_faker.Random.Int(3, 50)));
+            var postCommentId = _ulidGenerator.NewId();
             var postUsername = _faker.Internet.UserName();
-            aggregate.AddComment(postComment, postUsername);
+            aggregate.AddComment(postCommentId, postComment, postUsername);
 
             return aggregate;
         }

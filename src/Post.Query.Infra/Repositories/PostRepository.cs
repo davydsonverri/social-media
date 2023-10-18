@@ -2,11 +2,6 @@
 using Post.Query.Domain.Entities;
 using Post.Query.Domain.Repositories;
 using Post.Query.Infra.DataAccess;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Post.Query.Infra.Repositories
 {
@@ -26,7 +21,7 @@ namespace Post.Query.Infra.Repositories
             _ = await context.SaveChangesAsync();            
         }
 
-        public async Task DeleteAsync(Guid postId)
+        public async Task DeleteAsync(Did postId)
         {
             using DatabaseContext context = _contextFactory.CreateDbContext();
             var post = await GetByIdAsync(postId);
@@ -37,7 +32,7 @@ namespace Post.Query.Infra.Repositories
             _ = await context.SaveChangesAsync();
         }
 
-        public async Task<PostEntity?> GetByIdAsync(Guid postId)
+        public async Task<PostEntity?> GetByIdAsync(Did postId)
         {
             using DatabaseContext context = _contextFactory.CreateDbContext();
             return await context.Posts

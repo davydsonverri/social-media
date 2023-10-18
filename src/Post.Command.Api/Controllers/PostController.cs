@@ -1,7 +1,7 @@
 ﻿using CQRS.Core.Commands;
 using CQRS.Core.Exceptions;
-using CQRS.Core.Identity;
 using CQRS.Core.Infra;
+using Domain.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Post.Command.Api.Commands;
 using Post.Common.DTOs;
@@ -14,11 +14,13 @@ namespace Post.Command.Api.Controllers
     {
         private readonly ILogger<PostController> _logger;
         private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IDomainIdentity _domainIdentity;
 
-        public PostController(ILogger<PostController> logger, ICommandDispatcher commandDispatcher)
+        public PostController(ILogger<PostController> logger, ICommandDispatcher commandDispatcher, IDomainIdentity domainIdentity)
         {
             _logger = logger;
             _commandDispatcher = commandDispatcher;
+            _domainIdentity = domainIdentity;
         }
 
         private async Task<ActionResult> DispatchCommand(BaseCommand command)
@@ -59,39 +61,39 @@ namespace Post.Command.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> PostPosts(CreatePost command)
         {
-            command.Id = IdGenerator.NewId();
+            command.Id = _domainIdentity.NewId();
             return await DispatchCommand(command);
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult> PatchPosts(Guid id, UpdatePost command)
+        public async Task<ActionResult> PatchPosts(Did id, UpdatePost command)
         {
             command.Id = id;
             return await DispatchCommand(command);
         }
 
         [HttpDelete("{postId}")]
-        public async Task<ActionResult> DeletePosts(Guid postId, DeletePost command)
+        public async Task<ActionResult> DeletePosts(Did postId, DeletePost command)
         {
             command.Id = postId;
             return await DispatchCommand(command);
         }
 
         [HttpPost("{id}/like")]
-        public async Task<ActionResult> Like(Guid id)
+        public async Task<ActionResult> Like(Did id)
         {
             return await DispatchCommand(new LikePost { Id = id });
         }
 
         [HttpPost("{id}/comments")]
-        public async Task<ActionResult> PostComments(Guid id, CommentPost command)
+        public async Task<ActionResult> PostComments(Did id, CommentPost command)
         {
             command.Id = id;
             return await DispatchCommand(command);            
         }
 
         [HttpPatch("{postId}/comments/{commentId}")]
-        public async Task<ActionResult> PatchComments(Guid postId, Guid commentId,UpdateComment command)
+        public async Task<ActionResult> PatchComments(Did postId, Did commentId,UpdateComment command)
         {
             command.Id = postId;
             command.CommentId = commentId;
@@ -99,7 +101,7 @@ namespace Post.Command.Api.Controllers
         }
 
         [HttpDelete("{postId}/comments/{commentId}")]
-        public async Task<ActionResult> DeleteComments(Guid postId, Guid commentId, DeleteComment command)
+        public async Task<ActionResult> DeleteComments(Did postId, Did commentId, DeleteComment command)
         {
             command.Id = postId;
             command.CommentId = commentId;

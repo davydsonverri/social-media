@@ -16,7 +16,7 @@ namespace Post.Command.Infra.Handlers
             _eventProducer = eventProducer;
         }
 
-        public async Task<T> GetByIdAsync(Guid aggregateId)
+        public async Task<T> GetByIdAsync(Did aggregateId)
         {
             var aggregate = new T();
             var events = await _eventStore.GetEventsAsync(aggregateId);

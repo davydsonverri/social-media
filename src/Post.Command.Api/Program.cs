@@ -4,6 +4,9 @@ using CQRS.Core.Handlers;
 using CQRS.Core.Infra;
 using CQRS.Core.Messages;
 using CQRS.Core.Producers;
+using Domain.Identity;
+using Domain.Identity.ULID;
+using Microsoft.OpenApi.Models;
 using MongoDB.Bson.Serialization;
 using Post.Command.Api.Commands;
 using Post.Command.Domain.Aggregates;
@@ -25,6 +28,7 @@ BsonClassMap.RegisterClassMap<PostLiked>();
 BsonClassMap.RegisterClassMap<CommentAdded>();
 BsonClassMap.RegisterClassMap<CommentUpdated>();
 BsonClassMap.RegisterClassMap<CommentDeleted>();
+BsonSerializer.RegisterSerializer<Did>(new DidMongoSerializer());
 
 
 // Add services to the container.
@@ -35,7 +39,7 @@ builder.Services.AddScoped<IEventProducer, EventProducer>();
 builder.Services.AddScoped<IEventStore, EventStore>();
 builder.Services.AddScoped<IEventSourcingHandler<PostAggregate>, EventSourcingHandler<PostAggregate>>();
 builder.Services.AddScoped<ICommandHandler, CommandHandler>();
-
+builder.Services.AddSingleton<IDomainIdentity, UlidGenerator>();
 builder.Services.AddSingleton<ICommandDispatcher>(sp =>
 {
     var commandHandler = sp.CreateScope().ServiceProvider.GetRequiredService<ICommandHandler>();
@@ -56,6 +60,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.EnableAnnotations();
+    c.MapType<Did>(() => new OpenApiSchema()
+    {
+        Type = "string"
+    });
 });
 
 var app = builder.Build();

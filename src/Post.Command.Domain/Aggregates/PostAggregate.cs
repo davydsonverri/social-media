@@ -1,5 +1,4 @@
 ﻿using CQRS.Core.Domain;
-using CQRS.Core.Identity;
 using Post.Common.Events;
 
 namespace Post.Command.Domain.Aggregates
@@ -7,18 +6,17 @@ namespace Post.Command.Domain.Aggregates
     public class PostAggregate : AggregateRoot
     {
                 
-        public string Author { get; private set; }
-        public string Message { get; private set; }
+        public string Author { get; private set; } = string.Empty;
+        public string Message { get; private set; } = string.Empty;
         public bool Active { get; private set; }
         public int Likes { get; private set; }
-        public Dictionary<Guid, Tuple<string, string>> Comments { get; private set; } = new();
+        public Dictionary<Did, Tuple<string, string>> Comments { get; private set; } = new();
         
         public PostAggregate()
-        {
-            
+        {            
         }
 
-        public PostAggregate(Guid id, string author, string message)
+        public PostAggregate(Did id, string author, string message)
         {
             RaiseEvent(new PostCreated
             {
@@ -81,7 +79,7 @@ namespace Post.Command.Domain.Aggregates
             Likes += 1;
         }
 
-        public void AddComment(string comment, string username)
+        public void AddComment(Did commentId, string comment, string username)
         {
             if (!Active)
             {
@@ -96,7 +94,7 @@ namespace Post.Command.Domain.Aggregates
             RaiseEvent(new CommentAdded
             {
                 Id = _id,
-                CommentId = IdGenerator.NewId(),
+                CommentId = commentId,
                 Comment = comment,
                 Username = username,
                 CommentDate = DateTime.Now
@@ -109,7 +107,7 @@ namespace Post.Command.Domain.Aggregates
             Comments.Add(@event.CommentId, new Tuple<string, string>(@event.Comment, @event.Username));
         }
 
-        public void UpdateComment(Guid commentId, string comment, string username)
+        public void UpdateComment(Did commentId, string comment, string username)
         {
             if (!Active)
             {
@@ -136,7 +134,7 @@ namespace Post.Command.Domain.Aggregates
             Comments[@event.CommentId] = new Tuple<string, string>(@event.Comment, @event.Username);
         }
 
-        public void DeleteComment(Guid commentId, string username)
+        public void DeleteComment(Did commentId, string username)
         {
             if (!Active)
             {

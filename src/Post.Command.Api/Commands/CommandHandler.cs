@@ -1,4 +1,5 @@
 ﻿using CQRS.Core.Handlers;
+using Domain.Identity;
 using Post.Command.Domain.Aggregates;
 
 namespace Post.Command.Api.Commands
@@ -6,10 +7,12 @@ namespace Post.Command.Api.Commands
     public class CommandHandler : ICommandHandler
     {
         private readonly IEventSourcingHandler<PostAggregate> _eventSourcingHandler;
+        private readonly IDomainIdentity _domainIdentity;
 
-        public CommandHandler(IEventSourcingHandler<PostAggregate> eventSourcingHandler)
+        public CommandHandler(IEventSourcingHandler<PostAggregate> eventSourcingHandler, IDomainIdentity domainIdentity)
         {
             _eventSourcingHandler = eventSourcingHandler;
+            _domainIdentity = domainIdentity;
         }
 
         public async Task HandleAsync(CreatePost command)
@@ -42,7 +45,8 @@ namespace Post.Command.Api.Commands
         public async Task HandleAsync(CommentPost command)
         {
             var aggregate = await _eventSourcingHandler.GetByIdAsync(command.Id);
-            aggregate.AddComment(command.Comment, command.Username);
+            var commentId = _domainIdentity.NewId();
+            aggregate.AddComment(commentId, command.Comment, command.Username);
             await _eventSourcingHandler.SaveAsync(aggregate);
         }
 
