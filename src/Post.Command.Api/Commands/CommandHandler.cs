@@ -13,6 +13,7 @@ namespace Post.Command.Api.Commands
         {
             _eventSourcingHandler = eventSourcingHandler;
             _domainIdentity = domainIdentity;
+            // teste
         }
 
         public async Task HandleAsync(CreatePost command)
